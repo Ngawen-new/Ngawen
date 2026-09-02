@@ -1091,24 +1091,33 @@ img {
 }
 
 /* Desktop Segmented Nav Tabs (Desktop Only) */
+.header-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .desktop-nav-tabs {
   display: flex;
   align-items: center;
   background: var(--slate-100);
-  padding: 4px;
+  padding: 3px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-light);
   gap: 2px;
+  flex-shrink: 1;
+  max-width: 100%;
 }
 
 .nav-tab-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
+  gap: 6px;
+  padding: 6px 12px;
   border-radius: var(--radius-full);
   font-family: var(--font-body);
-  font-size: 0.825rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: var(--slate-600);
   background: transparent;
@@ -1116,7 +1125,7 @@ img {
   cursor: pointer;
   transition: var(--transition);
   white-space: nowrap;
-  min-height: 38px;
+  min-height: 34px;
 }
 
 .nav-tab-btn * {
@@ -1124,8 +1133,8 @@ img {
 }
 
 .nav-tab-btn i {
-  font-size: 0.85rem;
-  opacity: 0.75;
+  font-size: 0.8rem;
+  opacity: 0.8;
 }
 
 .nav-tab-btn:hover {
@@ -1148,11 +1157,11 @@ img {
 .btn-back-portal {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
+  gap: 8px;
+  padding: 7px 16px;
   background: linear-gradient(135deg, var(--brand-900), var(--brand-800));
   color: #ffffff !important;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 700;
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-md);
@@ -1160,11 +1169,11 @@ img {
   transition: var(--transition);
   white-space: nowrap;
   flex-shrink: 0;
-  min-height: 44px;
+  min-height: 36px;
 }
 
 .btn-back-portal i {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: transform 0.25s ease;
   color: var(--gold-400);
 }
@@ -1177,6 +1186,13 @@ img {
 
 .btn-back-portal:hover i {
   transform: translateX(-4px);
+}
+
+.desktop-theme-btn {
+  padding: 7px 14px;
+  font-size: 0.78rem;
+  min-height: 36px;
+  border-radius: var(--radius-full);
 }
 
 /* Mobile Hamburger Button (Hidden on Desktop) */
@@ -2388,12 +2404,13 @@ table.gov-table tbody tr:hover td {
   }
 }
 
-/* Tablets Landscape & Portrait (<= 992px) - Switch to Mobile Hamburger Drawer */
-@media (max-width: 992px) {
+/* Tablets Landscape & Laptops (<= 1200px) - Switch to Mobile Hamburger Drawer */
+@media (max-width: 1200px) {
 
   /* Hide Desktop Navbar Tabs & Back Button */
   .desktop-nav-tabs,
-  .desktop-back-btn {
+  .desktop-back-btn,
+  .desktop-theme-btn {
     display: none !important;
   }
 
