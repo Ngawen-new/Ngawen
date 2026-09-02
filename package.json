@@ -1,0 +1,23 @@
+{
+  "name": "web-desa-ngawen",
+  "version": "1.0.0",
+  "description": "Portal Resmi & CMS Management System Desa Ngawen, Muntilan, Magelang",
+  "main": "web ngawen/server.js",
+  "scripts": {
+    "start": "node \"web ngawen/server.js\"",
+    "dev": "node \"web ngawen/server.js\"",
+    "deploy:gh-pages": "gh-pages -d \"web ngawen\""
+  },
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.7.13",
+    "bcryptjs": "^3.0.3",
+    "express": "^4.19.2",
+    "express-rate-limit": "^8.6.2",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "serverless-http": "^4.0.0"
+  }
+}

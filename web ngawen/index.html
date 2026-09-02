@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Sistem Informasi Desa Ngawen — Kec. Muntilan, Kab. Magelang</title>
+  <meta name="description"
+    content="Portal Resmi Sistem Informasi Desa Ngawen, Kecamatan Muntilan, Kabupaten Magelang — Profil desa, kependudukan 4.153 jiwa, 10 dusun, potensi Candi Ngawen & Desa Wisata, layanan publik online warga.">
+  <meta name="theme-color" content="#0f3822">
+
+  <!-- Open Graph / Social Media Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://desangawen.magelangkab.go.id/">
+  <meta property="og:title" content="Sistem Informasi Desa Ngawen — Muntilan, Magelang">
+  <meta property="og:description"
+    content="Portal Resmi Profil Desa Ngawen: 4.153 jiwa, 10 dusun, Candi Ngawen warisan Wangsa Syailendra, Desa Wisata, program stunting, bank sampah, pemerintahan transparan.">
+  <meta property="og:image" content="assets/candi.png">
+
+  <!-- Favicon SVG -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f3822'/><path d='M20 75 L50 25 L80 75 Z' fill='%23fbbf24'/><path d='M35 75 L50 45 L65 75 Z' fill='%23ffffff'/></svg>">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Leaflet.js Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <!-- Main Professional Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css?v=2.1.0">
+
+  <!-- Chart.js Script Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Early Theme Bootstrap (prevents white screen flash) -->
+  <script>
+    (function () {
+      var savedTheme = localStorage.getItem('desa_theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else if (savedTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+</head>
+
+<body>
+
+  <!-- Backdrop overlay for mobile menu drawer -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <!-- Mobile Slide-Out Drawer (Separate from Desktop Header) -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="mobile-drawer-header">
+      <div class="drawer-title"><i class="fa-solid fa-compass" style="color:var(--gold-400); margin-right:8px;"></i>
+        Menu Navigasi</div>
+      <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Tutup Menu"><i
+          class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="mobile-drawer-body">
+      <button class="nav-tab-btn active" data-target="sec-profil">
+        <i class="fa-solid fa-house-chimney"></i> Profil Desa
+      </button>
+      <button class="nav-tab-btn" data-target="sec-pemerintahan">
+        <i class="fa-solid fa-building-columns"></i> Pemerintahan
+      </button>
+      <button class="nav-tab-btn" data-target="sec-potensi">
+        <i class="fa-solid fa-seedling"></i> Potensi Desa
+      </button>
+      <button class="nav-tab-btn" data-target="sec-kemasyarakatan">
+        <i class="fa-solid fa-users"></i> Kemasyarakatan
+      </button>
+      <button class="nav-tab-btn" data-target="sec-kelompok">
+        <i class="fa-solid fa-people-group"></i> Kelompok
+      </button>
+      <button class="nav-tab-btn" data-target="sec-wilayah">
+        <i class="fa-solid fa-map-location-dot"></i> Wilayah &amp; Lahan
+      </button>
+      <button class="nav-tab-btn" data-target="sec-umkm">
+        <i class="fa-solid fa-store"></i> Maps UMKM
+      </button>
+      <a href="berita.html" class="nav-tab-btn">
+        <i class="fa-solid fa-newspaper"></i> Berita &amp; Pengumuman
+      </a>
+    </div>
+
+    <div class="mobile-drawer-footer">
+      <button class="nav-theme-btn theme-toggle-btn" id="drawerThemeToggleBtn" title="Beralih Mode Gelap/Terang">
+        <i class="fa-solid fa-moon"></i> <span>Mode Gelap</span>
+      </button>
+      <a href="https://desangawen.magelangkab.go.id/First" class="btn-back-portal mobile-back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Kembali ke Website Utama
+      </a>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       TOP GOVERNMENT ANNOUNCEMENT & ACCESSIBILITY BAR
+       ========================================================= -->
+  <div class="gov-top-bar">
+    <div class="container gov-container">
+      <div class="gov-status">
+        <span class="status-dot"></span>
+        <span><strong>Portal Resmi Desa Ngawen</strong> — Layanan Informasi Digital</span>
+      </div>
+      <div class="gov-top-right">
+        <div class="gov-location-text">
+          <span>Kec. Muntilan · Kab. Magelang · Jawa Tengah</span>
+        </div>
+        <!-- Accessibility Controls: Font Sizer & Theme Toggle -->
+        <div class="a11y-controls">
+          <button class="a11y-btn" id="fontSizeDecBtn" title="Kecilkan Teks" aria-label="Kecilkan Teks">A-</button>
+          <button class="a11y-btn" id="fontSizeResetBtn" title="Ukuran Normal"
+            aria-label="Ukuran Normal Teks">A</button>
+          <button class="a11y-btn" id="fontSizeIncBtn" title="Besarkan Teks" aria-label="Besarkan Teks">A+</button>
+          <span class="a11y-divider"></span>
+          <button class="a11y-btn theme-toggle-btn" id="themeToggleBtn" title="Beralih Mode Gelap/Terang"
+            aria-label="Mode Gelap atau Terang">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <a href="admin.html" class="a11y-btn" title="Portal Admin CMS"
+            style="text-decoration:none; padding:4px 10px; font-size:0.78rem; font-weight:700; background:var(--gold-400); color:#0f3822; border-radius:6px; margin-left:6px; display:inline-flex; align-items:center; gap:4px;">
+            <i class="fa-solid fa-user-gear"></i> Admin CMS
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MAIN STICKY HEADER NAVBAR (DESKTOP & MOBILE HEADER)
+       ========================================================= -->
+  <header class="main-header">
+    <div class="container nav-wrapper">
+
+      <!-- Brand Identity -->
+      <div class="brand-identity" id="brandHomeBtn" style="cursor: pointer;" title="Kembali ke Teratas (Profil Desa)">
+        <div class="brand-logo-badge">
+          <i class="fa-solid fa-mountain-sun"></i>
+        </div>
+        <div class="brand-text">
+          <h1>Desa Ngawen</h1>
+          <span>Kab. Magelang, Jawa Tengah</span>
+        </div>
+      </div>
+
+      <!-- Segmented Navigation Tabs (Desktop Only) -->
+      <nav class="desktop-nav-tabs">
+        <button class="nav-tab-btn active" data-target="sec-profil">
+          <i class="fa-solid fa-house-chimney"></i> Profil Desa
+        </button>
+        <button class="nav-tab-btn" data-target="sec-pemerintahan">
+          <i class="fa-solid fa-building-columns"></i> Pemerintahan
+        </button>
+        <button class="nav-tab-btn" data-target="sec-potensi">
+          <i class="fa-solid fa-seedling"></i> Potensi Desa
+        </button>
+        <button class="nav-tab-btn" data-target="sec-kemasyarakatan">
+          <i class="fa-solid fa-users"></i> Kemasyarakatan
+        </button>
+        <button class="nav-tab-btn" data-target="sec-kelompok">
+          <i class="fa-solid fa-people-group"></i> Kelompok
+        </button>
+        <button class="nav-tab-btn" data-target="sec-wilayah">
+          <i class="fa-solid fa-map-location-dot"></i> Wilayah &amp; Lahan
+        </button>
+        <button class="nav-tab-btn" data-target="sec-umkm">
+          <i class="fa-solid fa-store"></i> Maps UMKM
+        </button>
+        <a href="berita.html" class="nav-tab-btn">
+          <i class="fa-solid fa-newspaper"></i> Berita &amp; Pengumuman
+        </a>
+      </nav>
+
+      <div class="header-right-actions">
+        <!-- Desktop Header Theme Switcher Pill -->
+        <button class="nav-theme-btn theme-toggle-btn desktop-theme-btn" id="desktopThemeToggleBtn"
+          title="Mode Gelap / Terang">
+          <i class="fa-solid fa-moon"></i> <span>Mode Gelap</span>
+        </button>
+
+        <!-- Back Button to External Portal (Desktop Only) -->
+        <a href="https://desangawen.magelangkab.go.id/First" class="btn-back-portal desktop-back-btn"
+          id="btn-back-main">
+          <i class="fa-solid fa-arrow-left"></i> Kembali ke Website Utama
+        </a>
+      </div>
+
+      <!-- Hamburger Menu Button for Mobile & Tablet -->
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Buka Navigasi Menu" aria-expanded="false">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+    </div>
+  </header>
+
+  <!-- =========================================================
+       MAIN CONTENT CONTAINER
+       ========================================================= -->
+  <main class="main-content container">
+    <div class="sections-stack">
+
+      <!-- =====================================================
+           SECTION 1: PROFIL DESA & VISI MISI
+           ===================================================== -->
+      <section id="sec-profil" class="page-section">
+
+        <!-- Header Strip -->
+        <div class="section-header-strip">
+          <div class="strip-title-badge">
+            <div class="strip-icon"><i class="fa-solid fa-house-chimney"></i></div>
+            <div>
+              <div class="strip-eyebrow">Profil Desa</div>
+              <div class="strip-subtext">Informasi Umum, Visi Misi &amp; Demografi Kependudukan</div>
+            </div>
+          </div>
+          <div class="strip-code-badge">
+            Kode Wilayah: 33.08.06.2008
+          </div>
+        </div>
+
+        <!-- Hero Banner Block -->
+        <div class="hero-block">
+          <span class="hero-pill"><i class="fa-solid fa-sparkles"></i> Selamat Datang Di Portal Desa Ngawen</span>
+          <h2 class="hero-title">Membangun Desa,<br><span>Merawat Tradisi.</span></h2>
+          <p class="hero-desc">
+            Desa Ngawen terletak di Kecamatan Muntilan, Kabupaten Magelang, Jawa Tengah. Terkenal sebagai kawasan wisata
+            berbasis alam dan cagar budaya dengan ikon utama <strong>Candi Ngawen</strong> — peninggalan megah Wangsa
+            Syailendra abad ke-8. Masyarakat Ngawen hidup harmonis dengan mata pencaharian utama bidang agraris dan
+            pariwisata.
+          </p>
+
+          <!-- Quick Stats Grid -->
+          <div class="hero-stats-row">
+            <div class="hero-stat-card">
+              <div class="hero-stat-icon"><i class="fa-solid fa-users"></i></div>
+              <div class="hero-stat-number">4.153</div>
+              <div class="hero-stat-label">Total Jiwa Penduduk</div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-icon"><i class="fa-solid fa-house-user"></i></div>
+              <div class="hero-stat-number">1.370</div>
+              <div class="hero-stat-label">Kepala Keluarga (KK)</div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-icon"><i class="fa-solid fa-vector-square"></i></div>
+              <div class="hero-stat-number">202.8</div>
+              <div class="hero-stat-label">Hektar Luas Wilayah</div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-icon"><i class="fa-solid fa-sitemap"></i></div>
+              <div class="hero-stat-number">10</div>
+              <div class="hero-stat-label">Dusun Administratif</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Content Padding -->
+        <div class="section-content">
+
+          <!-- Visi Misi Section -->
+          <div class="section-heading-block">
+            <div class="section-eyebrow">Arah Kebijakan Desa</div>
+            <h3 class="section-main-title">Visi &amp; Misi Desa Ngawen</h3>
+          </div>
+
+          <!-- Visi Card -->
+          <div class="visi-card">
+            <div class="visi-tag">VISI UTAMA DESA</div>
+            <p class="visi-text">
+              "Terwujudnya Desa Ngawen yang Sejahtera dan Berprestasi guna Menopang Desa Wisata"
+            </p>
+          </div>
+
+          <!-- Misi 6 Grid -->
+          <div class="misi-grid misi-grid-6">
+            <div class="misi-item-card">
+              <div class="misi-number">01</div>
+              <p>Mewujudkan rasa aman dan adil pada seluruh masyarakat.</p>
+            </div>
+            <div class="misi-item-card">
+              <div class="misi-number">02</div>
+              <p>Meningkatkan pembangunan sosial dan ekonomi berbasis pertanian dan UMKM</p>
+            </div>
+            <div class="misi-item-card">
+              <div class="misi-number">03</div>
+              <p>Menyelenggarakan birokrasi pemerintahan yang profesional, bersih, berakhlak, dan berinovasi.</p>
+            </div>
+            <div class="misi-item-card">
+              <div class="misi-number">04</div>
+              <p>Meningkatkan pembangunan infrastruktur berbasis pemerataan wilayah dan berwawasan lingkungan.</p>
+            </div>
+            <div class="misi-item-card">
+              <div class="misi-number">05</div>
+              <p>Menggali potensi kreatif dan berwawasan.</p>
+            </div>
+            <div class="misi-item-card">
+              <div class="misi-number">06</div>
+              <p>Meningkatkan peran serta masyarakat dan stakeholder dalam mengembangkan Desa Wisata Ngawen.</p>
+            </div>
+          </div>
+
+          <!-- Demografi & Wilayah 2-Col Grid -->
+          <div style="margin-top: 40px;">
+            <div class="section-heading-block">
+              <div class="section-eyebrow">Statistik Kependudukan</div>
+              <h3 class="section-main-title">Demografi &amp; Wilayah Administratif</h3>
+            </div>
+
+            <div class="grid-2col">
+              <!-- Demografi Hero Card -->
+              <div class="demografi-hero-card">
+                <div>
+                  <div class="card-label"><i class="fa-solid fa-chart-pie" style="margin-right:6px;"></i> Kependudukan
+                    Desa</div>
+                  <div class="total-number">4.153</div>
+                  <div class="total-desc">Total Jiwa Terdaftar di Desa Ngawen</div>
+                </div>
+
+                <div class="gender-breakdown-row">
+                  <div class="gender-box">
+                    <div class="gender-count">2.033</div>
+                    <div class="gender-label"><i class="fa-solid fa-mars"
+                        style="color:var(--brand-200); margin-right:4px;"></i> Laki-laki</div>
+                  </div>
+                  <div class="gender-box">
+                    <div class="gender-count">2.117</div>
+                    <div class="gender-label"><i class="fa-solid fa-venus"
+                        style="color:var(--gold-400); margin-right:4px;"></i> Perempuan</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Wilayah List -->
+              <div class="wilayah-admin-list">
+                <div class="wilayah-admin-item">
+                  <div class="admin-badge badge-1">01</div>
+                  <div class="admin-info">
+                    <div class="type">Pembagian Dusun</div>
+                    <div class="title">10 Dusun Tersebar di Wilayah Desa</div>
+                  </div>
+                </div>
+                <div class="wilayah-admin-item">
+                  <div class="admin-badge badge-2">02</div>
+                  <div class="admin-info">
+                    <div class="type">Rukun Warga (RW)</div>
+                    <div class="title">22 Wilayah Rukun Warga (RW)</div>
+                  </div>
+                </div>
+                <div class="wilayah-admin-item">
+                  <div class="admin-badge badge-3">03</div>
+                  <div class="admin-info">
+                    <div class="type">Rukun Tetangga (RT)</div>
+                    <div class="title">43 Wilayah Rukun Tetangga (RT)</div>
+                  </div>
+                </div>
+                <div class="wilayah-admin-item">
+                  <div class="admin-badge badge-4">04</div>
+                  <div class="admin-info">
+                    <div class="type">Kepala Keluarga</div>
+                    <div class="title">1.370 Kepala Keluarga (KK)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Karakteristik Fondasi Grid -->
+          <div style="margin-top: 36px;">
+            <div class="grid-2col">
+              <div class="fondasi-card">
+                <div class="fondasi-icon-halo green"><i class="fa-solid fa-wheat-awn"></i></div>
+                <div class="fondasi-text">
+                  <h4>Masyarakat Agraris</h4>
+                  <p>Mayoritas warga menekuni bidang pertanian persawahan yang subur, mengolah hasil bumi, dan menjaga
+                    tradisi agraris nusantara.</p>
+                </div>
+              </div>
+              <div class="fondasi-card">
+                <div class="fondasi-icon-halo amber"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                <div class="fondasi-text">
+                  <h4>Budaya Gotong Royong</h4>
+                  <p>Kehidupan sosial berlandaskan kerukunan, kearifan lokal, serta keterbukaan dalam menyambut
+                    wisatawan dan tamu desa.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION 2: PEMERINTAHAN DESA
+           ===================================================== -->
+      <section id="sec-pemerintahan" class="page-section">
+
+        <!-- Header Strip -->
+        <div class="section-header-strip">
+          <div class="strip-title-badge">
+            <div class="strip-icon"><i class="fa-solid fa-building-columns"></i></div>
+            <div>
+              <div class="strip-eyebrow">Pemerintahan Desa</div>
+              <div class="strip-subtext">Struktur Organisasi &amp; Program Unggulan Pelayanan Warga</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-content">
+
+          <!-- Kades & Description Grid -->
+          <div class="grid-2col" style="margin-bottom: 32px; align-items: start;">
+            <div>
+              <div class="section-eyebrow">TATA KELOLA PEMERINTAHAN</div>
+              <h3 class="section-main-title" style="margin-bottom: 12px;">Pemerintah Desa Ngawen</h3>
+              <p style="font-size: 0.95rem; color: var(--slate-600); line-height: 1.7;">
+                Pemerintah Desa Ngawen berkomitmen memberikan pelayanan publik prima, transparan, serta akuntabel demi
+                mendorong pembangunan fisik dan sosial desa secara berkelanjutan.
+              </p>
+            </div>
+
+            <!-- Profile Kepala Desa -->
+            <div class="pejabat-card">
+              <div class="pejabat-avatar">
+                <img src="assets/balai_desa.png" alt="Balai Desa Ngawen">
+              </div>
+              <div>
+                <span class="pejabat-role-tag">Kepala Desa</span>
+                <div class="pejabat-name">Daru Apsari Ratnawati</div>
+                <div class="pejabat-desc">Pimpinan Pemerintah Desa Ngawen</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Program Unggulan Dark Banner -->
+          <div class="program-dark-banner">
+            <div class="program-banner-title">
+              <i class="fa-solid fa-star"></i> Program Kerja Unggulan Desa
+              <span class="banner-badge-hint"><i class="fa-solid fa-hand-pointer"></i> Klik kartu untuk detail</span>
+            </div>
+            <div class="program-card-grid">
+              <div class="program-mini-card clickable-card" data-modal="stunting">
+                <div class="program-icon-box"><i class="fa-solid fa-baby"></i></div>
+                <h4>Penanganan Stunting</h4>
+                <p>Program pemenuhan gizi terpadu dan pemberian nutrisi tambahan bagi balita dan anak.</p>
+                <span class="card-link-text">Lihat Detail <i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+              <div class="program-mini-card clickable-card" data-modal="waluyo">
+                <div class="program-icon-box"><i class="fa-solid fa-heart-pulse"></i></div>
+                <h4>Posyandu Waluyo Jiwo</h4>
+                <p>Layanan kesehatan fisik dan mental secara berkala bagi lansia dan warga desa.</p>
+                <span class="card-link-text">Lihat Detail <i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+              <div class="program-mini-card clickable-card" data-modal="banksampah">
+                <div class="program-icon-box"><i class="fa-solid fa-recycle"></i></div>
+                <h4>Bank Sampah Desa</h4>
+                <p>Pengelolaan dan pemilahan sampah organik &amp; anorganik berbasis komunitas warga.</p>
+                <span class="card-link-text">Lihat Detail <i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+              <div class="program-mini-card clickable-card" data-modal="festival">
+                <div class="program-icon-box"><i class="fa-solid fa-masks-theater"></i></div>
+                <h4>Festival Candi Ngawen</h4>
+                <p>Agenda budaya tahunan untuk mengangkat pariwisata warisan sejarah Candi Ngawen.</p>
+                <span class="card-link-text">Lihat Detail <i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Perangkat Desa Grid -->
+          <div class="section-heading-block">
+            <div class="section-eyebrow">Jajaran Aparatur</div>
+            <h3 class="section-main-title">Perangkat Desa Ngawen</h3>
+          </div>
+
+          <div class="grid-4col" style="margin-bottom: 32px;">
+            <div class="pejabat-card">
+              <div
+                style="width:48px; height:48px; border-radius:var(--radius-md); background:var(--brand-100); color:var(--brand-900); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">
+                <i class="fa-solid fa-user-tie"></i>
+              </div>
+              <div>
+                <span class="pejabat-role-tag">Sekretaris Desa</span>
+                <div class="pejabat-name">Agus Heri Purwanto</div>
+                <div class="pejabat-desc">Administrasi &amp; Pelayanan Publik</div>
+              </div>
+            </div>
+
+            <div class="pejabat-card">
+              <div
+                style="width:48px; height:48px; border-radius:var(--radius-md); background:var(--gold-100); color:var(--gold-700); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">
+                <i class="fa-solid fa-coins"></i>
+              </div>
+              <div>
+                <span class="pejabat-role-tag amber">Kaur Keuangan</span>
+                <div class="pejabat-name">Erni Wahyu W</div>
+                <div class="pejabat-desc">Transparansi Anggaran &amp; APBDes</div>
+              </div>
+            </div>
+
+            <div class="pejabat-card">
+              <div
+                style="width:48px; height:48px; border-radius:var(--radius-md); background:var(--brand-100); color:var(--brand-900); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">
+                <i class="fa-solid fa-clipboard-check"></i>
+              </div>
+              <div>
+                <span class="pejabat-role-tag">Kaur Umum & Perencanaan</span>
+                <div class="pejabat-name">Sutrisno</div>
+                <div class="pejabat-desc">Program Pembangunan Fisik</div>
+              </div>
+            </div>
+
+            <div class="pejabat-card">
+              <div
+                style="width:48px; height:48px; border-radius:var(--radius-md); background:var(--gold-100); color:var(--gold-700); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">
+                <i class="fa-solid fa-scale-balanced"></i>
+              </div>
+              <div>
+                <span class="pejabat-role-tag amber">Kasi Pelayanan</span>
+                <div class="pejabat-name">Inriani</div>
+                <div class="pejabat-desc">Tata Kelola &amp; Layanan Warga</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kepala Dusun (Kadus) Grid -->
+          <div class="section-heading-block">
+            <div class="section-eyebrow">Kepala Wilayah (Kadus)</div>
+            <h3 class="section-main-title">10 Kepala Dusun Desa Ngawen</h3>
+          </div>
+
+          <div class="kadus-grid-box" style="margin-bottom: 32px;">
+            <div class="kadus-card">
+              <div class="dusun-title">Kolokendang</div>
+              <div class="kadus-name">Joko Susetya</div>
+            </div>
+            <div class="kadus-card">
+              <div class="dusun-title">Citromenggalan</div>
+              <div class="kadus-name">Rahmad Basuki</div>
+            </div>
+            <div class="kadus-card">
+              <div class="dusun-title">Clapar</div>
+              <div class="kadus-name">Aziz Efendi</div>
+            </div>
+            <div class="kadus-card">
+              <div class="dusun-title">Gejayan</div>
+              <div class="kadus-name">Rahmad Basuki</div>
+            </div>
+            <div class="kadus-card">
+              <div class="dusun-title">Jetis</div>
+              <div class="kadus-name">Ahmad Nurrofiq</div>
+            </div>
+            <div class="kadus-card">
+              <div class="dusun-title">Judah</div>
+              <div class="kadus-name">Nuryanto</div>
+            </div>
+            <div class="kadus-card">
+              <div class="dusun-title">Kemiriombo</div>
+              <div class="kadus-name">Lutfiyono</div>
+            </div>
+            <div class="kadus-card">
+              <div class="dusun-title">Kesaran</div>
+              <div class="kadus-name">Joko Susetya</div>
+            </div>
+            <div class="kadus-card">
+              <div class="dusun-title">Nganten</div>
+              <div class="kadus-name">Ahmad Nurrofiq</div>
+            </div>
+            <div class="kadus-card">
+              <div class="dusun-title">Ngawen</div>
+              <div class="kadus-name">Nuryanto</div>
+            </div>
+          </div>
+
+          <!-- Transparansi Cards -->
+          <div class="grid-2col">
+            <div class="transparansi-card" data-modal="siskeudes" style="cursor: pointer;"
+              title="Klik untuk membuka Transparansi APBDes Siskeudes">
+              <div class="transparansi-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+              <div>
+                <h4>Siskeudes (Sistem Keuangan Desa)</h4>
+                <p>Pelaporan Anggaran Pendapatan dan Belanja Desa secara terbuka dan dapat diakses publik. Klik untuk
+                  detail APBDes.</p>
+              </div>
+            </div>
+            <div class="transparansi-card" data-modal="jdih" style="cursor: pointer;"
+              title="Klik untuk melihat Katalog Peraturan Desa">
+              <div class="transparansi-icon amber"><i class="fa-solid fa-gavel"></i></div>
+              <div>
+                <h4>JDIH Peraturan Desa</h4>
+                <p>Jaringan Dokumentasi dan Informasi Hukum untuk melihat dokumen Peraturan Desa (Perdes) terbaru. Klik
+                  untuk katalog.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION 3: POTENSI DESA (HERITAGE & HARVEST)
+           ===================================================== -->
+      <section id="sec-potensi" class="page-section">
+
+        <!-- Header Strip -->
+        <div class="section-header-strip">
+          <div class="strip-title-badge">
+            <div class="strip-icon"><i class="fa-solid fa-seedling"></i></div>
+            <div>
+              <div class="strip-eyebrow">Potensi Unggulan</div>
+              <div class="strip-subtext">Heritage &amp; Harvest — Pariwisata, Kerajinan &amp; Agrowisata</div>
+            </div>
+          </div>
+          <span class="potensi-badge-tag"><i class="fa-solid fa-award"></i> 5 Sektor Unggulan</span>
+        </div>
+
+        <div class="section-content">
+
+          <!-- Wisata & Products Grid -->
+          <div class="potensi-media-grid" style="margin-bottom: 24px;">
+            <!-- Candi Ngawen Image Showcase -->
+            <div class="potensi-img-card" style="min-height: 320px;">
+              <img src="assets/candi.png" alt="Candi Ngawen">
+              <div class="potensi-overlay">
+                <div class="overlay-tag"><i class="fa-solid fa-landmark"></i> Cagar Budaya &amp; Sejarah</div>
+                <h4>Candi Ngawen &amp; Sendang Manis</h4>
+                <p>Kompleks 5 Candi Buddha peninggalan Wangsa Syailendra abad ke-8 dengan arca singa yang unik. Terdapat
+                  pula Sendang Manis dan wahana River Tubing Kali Blongkeng.</p>
+                <div class="tag-pills-row">
+                  <span class="tag-pill-item">5 Candi Buddha</span>
+                  <span class="tag-pill-item">River Tubing</span>
+                  <span class="tag-pill-item">Camping Ground</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Produk Lokal List -->
+            <div class="produk-lokal-box">
+              <div>
+                <div
+                  style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--brand-700); margin-bottom:8px;">
+                  <i class="fa-solid fa-bag-shopping" style="margin-right:4px;"></i> Kerajinan &amp; Kuliner
+                </div>
+                <h4 style="font-size:1.15rem; font-weight:800; color:var(--slate-900); margin-bottom:8px;">Produk Lokal
+                  Khas Ngawen</h4>
+                <p style="font-size:0.85rem; color:var(--slate-600); margin-bottom:16px;">
+                  Berbagai hasil kerajinan tangan bermutu tinggi dan kuliner tradisional buatan warga lokal.
+                </p>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div class="produk-row-item"><i class="fa-solid fa-circle-check"></i> Kerajinan Doran — Dusun Clapar
+                </div>
+                <div class="produk-row-item"><i class="fa-solid fa-circle-check"></i> Air Mancur Batu Khas Muntilan
+                </div>
+                <div class="produk-row-item"><i class="fa-solid fa-circle-check"></i> Kuliner Khas Jenang &amp; Jemunak
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Edukasi Pertanian Full Image Card -->
+          <div class="potensi-img-card" style="height: 240px; margin-bottom: 24px;">
+            <img src="assets/ekonomi.png" alt="Edukasi Pertanian">
+            <div class="potensi-overlay">
+              <div class="overlay-tag"><i class="fa-solid fa-wheat-awn"></i> Agrowisata &amp; Edukasi Tani</div>
+              <h4>Edukasi Pertanian &amp; Outbound Desa</h4>
+              <p>Pengalaman belajar bertani langsung di sawah, mengenal ritual kearifan lokal Sego Wiwit, serta wahana
+                outbound edukatif bagi pengunjung.</p>
+              <div class="tag-pills-row">
+                <span class="tag-pill-item">Ritual Sego Wiwit</span>
+                <span class="tag-pill-item">Paket Edukasi Tani</span>
+                <span class="tag-pill-item">Outbound Alam</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart & Collab CTA Grid -->
+          <div class="grid-2col">
+            <!-- Donut Chart Box -->
+            <div class="chart-box-wrapper">
+              <div
+                style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--brand-700); margin-bottom:4px;">
+                Distribusi Ekonomi</div>
+              <h4 style="font-size:1.05rem; font-weight:800; color:var(--slate-900); margin-bottom:12px;">Sebaran
+                Potensi Desa</h4>
+              <div class="chart-canvas-container"
+                style="height:200px; min-height:180px; position:relative; display:flex; align-items:center; justify-content:center;">
+                <canvas id="potensiChart"></canvas>
+                <div class="standalone-donut-svg"
+                  style="width:100%; height:100%; min-height:180px; display:flex; align-items:center; justify-content:center; position:relative;">
+                  <svg viewBox="0 0 42 42"
+                    style="width:100%; height:100%; max-height:180px; transform: rotate(-90deg);">
+                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#22c55e" stroke-width="5"
+                      stroke-dasharray="40 60" stroke-dashoffset="0"></circle>
+                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#f59e0b" stroke-width="5"
+                      stroke-dasharray="40 60" stroke-dashoffset="-40"></circle>
+                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#0284c7" stroke-width="5"
+                      stroke-dasharray="20 80" stroke-dashoffset="-80"></circle>
+                  </svg>
+                  <div
+                    style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center; pointer-events:none;">
+                    <div style="font-size:1.15rem; font-weight:800; color:var(--slate-900); line-height:1;">100%</div>
+                    <div style="font-size:0.68rem; font-weight:600; color:var(--slate-500); margin-top:2px;">Potensi
+                      Desa</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Data Breakdown List (High Contrast & Always Visible) -->
+              <div class="potensi-legend-list" id="potensiLegendList"
+                style="margin-top:14px; display:flex; flex-direction:column; gap:8px;">
+                <div
+                  style="display:flex; align-items:center; justify-content:space-between; font-size:0.8rem; padding:6px 10px; background:rgba(34,197,94,0.12); border-radius:6px; border-left:3px solid #22c55e;">
+                  <span style="font-weight:600;"><i class="fa-solid fa-landmark"
+                      style="color:#22c55e; margin-right:6px;"></i> Pariwisata &amp; Cagar Budaya</span>
+                  <span style="font-weight:800; color:#22c55e;">40%</span>
+                </div>
+                <div
+                  style="display:flex; align-items:center; justify-content:space-between; font-size:0.8rem; padding:6px 10px; background:rgba(245,158,11,0.12); border-radius:6px; border-left:3px solid #f59e0b;">
+                  <span style="font-weight:600;"><i class="fa-solid fa-wheat-awn"
+                      style="color:#f59e0b; margin-right:6px;"></i> Pertanian &amp; Agrowisata</span>
+                  <span style="font-weight:800; color:#f59e0b;">40%</span>
+                </div>
+                <div
+                  style="display:flex; align-items:center; justify-content:space-between; font-size:0.8rem; padding:6px 10px; background:rgba(2,132,199,0.12); border-radius:6px; border-left:3px solid #0284c7;">
+                  <span style="font-weight:600;"><i class="fa-solid fa-hammer"
+                      style="color:#0284c7; margin-right:6px;"></i> Kerajinan, Kuliner &amp; Transportasi</span>
+                  <span style="font-weight:800; color:#0284c7;">20%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Collab Banner -->
+            <div class="collab-cta-banner"
+              style="flex-direction: column; justify-content: center; align-items: flex-start;">
+              <div>
+                <div
+                  style="font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--gold-400); margin-bottom:8px;">
+                  KEMITRAAN &amp; INVESTASI</div>
+                <h3 style="font-size:1.35rem; font-weight:800; color:#ffffff; margin-bottom:8px;">Mari Berkolaborasi
+                  Bersama Desa</h3>
+                <p style="font-size:0.85rem; color:var(--brand-200); margin-bottom:20px; line-height:1.6;">
+                  Pemerintah Desa Ngawen membuka kesempatan investasi, penelitian, dan kemitraan pengembanan pariwisata
+                  berkelanjutan.
+                </p>
+              </div>
+              <a href="https://desangawen.magelangkab.go.id/First" class="btn-gold-action">
+                Hubungi BUMDes Ngawen <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION 4: KEMASYARAKATAN
+           ===================================================== -->
+      <section id="sec-kemasyarakatan" class="page-section">
+
+        <!-- Header Strip -->
+        <div class="section-header-strip">
+          <div class="strip-title-badge">
+            <div class="strip-icon"><i class="fa-solid fa-users"></i></div>
+            <div>
+              <div class="strip-eyebrow">Kemasyarakatan</div>
+              <div class="strip-subtext">Nilai Sosial, Komposisi Warga &amp; Kehidupan Bermasyarakat</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-content">
+
+          <!-- Tables & Image Grid -->
+          <div class="grid-2col" style="margin-bottom: 32px;">
+            <div style="display:flex; flex-direction:column; gap:20px;">
+              <!-- Agama Table -->
+              <div class="data-table-container">
+                <div class="data-table-title"><i class="fa-solid fa-place-of-worship" style="margin-right:6px;"></i>
+                  Komposisi Kepercayaan / Agama</div>
+                <div class="table-responsive-wrapper">
+                  <table class="gov-table">
+                    <thead>
+                      <tr>
+                        <th>Agama</th>
+                        <th style="text-align:right;">Persentase</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><i class="fa-solid fa-moon" style="color:var(--brand-600); margin-right:8px;"></i> Islam
+                        </td>
+                        <td style="text-align:right;">
+                          <div class="table-progress-bar">
+                            <div class="bar-track">
+                              <div class="bar-fill" style="width:92%;"></div>
+                            </div>
+                            <span>92%</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><i class="fa-solid fa-cross" style="color:var(--brand-600); margin-right:8px;"></i> Kristen
+                          &amp; Katholik</td>
+                        <td style="text-align:right;">
+                          <div class="table-progress-bar">
+                            <div class="bar-track">
+                              <div class="bar-fill" style="width:7%;"></div>
+                            </div>
+                            <span>7%</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><i class="fa-solid fa-om" style="color:var(--brand-600); margin-right:8px;"></i> Hindu &amp;
+                          Lainnya</td>
+                        <td style="text-align:right;">
+                          <div class="table-progress-bar">
+                            <div class="bar-track">
+                              <div class="bar-fill" style="width:1%;"></div>
+                            </div>
+                            <span>1%</span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Mata Pencaharian Table -->
+              <div class="data-table-container">
+                <div class="data-table-title"><i class="fa-solid fa-briefcase" style="margin-right:6px;"></i> Mata
+                  Pencaharian Utama Warga</div>
+                <div class="table-responsive-wrapper">
+                  <table class="gov-table">
+                    <thead>
+                      <tr>
+                        <th>Sektor Pekerjaan</th>
+                        <th style="text-align:right;">Proporsi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Pertanian &amp; Buruh Tani</td>
+                        <td style="text-align:right; font-weight:700; color:var(--brand-900);">38.5%</td>
+                      </tr>
+                      <tr>
+                        <td>Sektor Swasta &amp; Industri</td>
+                        <td style="text-align:right; font-weight:700; color:var(--brand-900);">24.2%</td>
+                      </tr>
+                      <tr>
+                        <td>Wiraswasta &amp; Perdagangan</td>
+                        <td style="text-align:right; font-weight:700; color:var(--brand-900);">21.8%</td>
+                      </tr>
+                      <tr>
+                        <td>PNS / TNI / Polri</td>
+                        <td style="text-align:right; font-weight:700; color:var(--brand-900);">15.5%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image Card -->
+            <div
+              style="border-radius:var(--radius-xl); overflow:hidden; border:1px solid var(--border-light); height:100%; min-height:260px;">
+              <img src="assets/demografi.png" alt="Suasana Warga Desa"
+                style="width:100%; height:100%; object-fit:cover;">
+            </div>
+          </div>
+
+          <!-- Social Activities 3 Grid -->
+          <div class="section-heading-block">
+            <div class="section-eyebrow">Aksi Sosial</div>
+            <h3 class="section-main-title">Program &amp; Kegiatan Kemasyarakatan</h3>
+          </div>
+
+          <div class="grid-3col">
+            <div class="kegiatan-social-card">
+              <div class="kegiatan-img-wrapper">
+                <img src="assets/demografi.png" alt="Pencegahan Stunting">
+              </div>
+              <div class="kegiatan-body-content">
+                <div
+                  style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--brand-700); margin-bottom:6px;">
+                  <i class="fa-solid fa-child"></i> Kesehatan Anak
+                </div>
+                <h4 style="font-size:1rem; font-weight:700; color:var(--slate-900); margin-bottom:8px;">Pencegahan
+                  Stunting</h4>
+                <p style="font-size:0.825rem; color:var(--slate-600);">Pemberian edukasi nutrisi seimbang, suplemen
+                  tambahan, dan pendampingan gizi rutin bagi balita.</p>
+              </div>
+              <div class="kegiatan-footer-bar">
+                <span><i class="fa-regular fa-clock" style="margin-right:4px;"></i> Agenda Bulanan</span>
+                <span style="color:var(--brand-700);">Selengkapnya <i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </div>
+
+            <div class="kegiatan-social-card">
+              <div class="kegiatan-img-wrapper">
+                <img src="assets/pkk.png" alt="Posyandu Waluyo Jiwo">
+              </div>
+              <div class="kegiatan-body-content">
+                <div
+                  style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--gold-700); margin-bottom:6px;">
+                  <i class="fa-solid fa-notes-medical"></i> Layanan Lansia
+                </div>
+                <h4 style="font-size:1rem; font-weight:700; color:var(--slate-900); margin-bottom:8px;">Posyandu Waluyo
+                  Jiwo</h4>
+                <p style="font-size:0.825rem; color:var(--slate-600);">Layanan pemeriksaan kesehatan lansia terpadu
+                  untuk memantau kondisi fisik dan metabolisme tubuh.</p>
+              </div>
+              <div class="kegiatan-footer-bar">
+                <span><i class="fa-regular fa-clock" style="margin-right:4px;"></i> Minggu Ke-2</span>
+                <span style="color:var(--brand-700);">Selengkapnya <i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </div>
+
+            <div class="kegiatan-social-card">
+              <div class="kegiatan-img-wrapper">
+                <img src="assets/ekonomi.png" alt="Bank Sampah">
+              </div>
+              <div class="kegiatan-body-content">
+                <div
+                  style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--brand-700); margin-bottom:6px;">
+                  <i class="fa-solid fa-leaf"></i> Lingkungan Hidup
+                </div>
+                <h4 style="font-size:1rem; font-weight:700; color:var(--slate-900); margin-bottom:8px;">Bank Sampah
+                  &amp; Gotong Royong</h4>
+                <p style="font-size:0.825rem; color:var(--slate-600);">Gerakan kebersihan lingkungan, pemilahan sampah
+                  organik, dan kerja bakti rutin antar dusun.</p>
+              </div>
+              <div class="kegiatan-footer-bar">
+                <span><i class="fa-regular fa-clock" style="margin-right:4px;"></i> Minggu Ke-4</span>
+                <span style="color:var(--brand-700);">Selengkapnya <i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION 5: KELOMPOK MASYARAKAT
+           ===================================================== -->
+      <section id="sec-kelompok" class="page-section">
+
+        <!-- Header Strip -->
+        <div class="section-header-strip">
+          <div class="strip-title-badge">
+            <div class="strip-icon"><i class="fa-solid fa-people-group"></i></div>
+            <div>
+              <div class="strip-eyebrow">Kelembagaan Desa</div>
+              <div class="strip-subtext">Organisasi Kemasyarakatan &amp; Pemberdayaan Komunitas</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-content">
+
+          <!-- PKK Showcase Grid -->
+          <div class="grid-2col" style="margin-bottom: 32px;">
+            <div
+              style="border-radius:var(--radius-xl); overflow:hidden; border:1px solid var(--border-light); height:100%; min-height:260px;">
+              <img src="assets/pkk.png" alt="PKK Desa Ngawen" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+
+            <div class="pkk-feature-box">
+              <div
+                style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--brand-700); margin-bottom:6px;">
+                Pemberdayaan Wanita</div>
+              <h3 style="font-size:1.25rem; font-weight:800; color:var(--slate-900); margin-bottom:10px;">PKK
+                (Pemberdayaan Kesejahteraan Keluarga)</h3>
+              <p style="font-size:0.85rem; color:var(--slate-600); margin-bottom:20px; line-height:1.6;">
+                Mendorong peran wanita dalam ketahanan pangan keluarga, Dapur Sehat Stunting, kerajinan tangan, dan
+                pembinaan anak usia dini.
+              </p>
+
+              <div class="grid-2col" style="gap:12px; margin-bottom:20px;">
+                <div
+                  style="background:var(--bg-surface); border:1px solid var(--border-light); border-radius:var(--radius-md); padding:12px; text-align:center;">
+                  <div style="font-size:1.6rem; font-weight:800; color:var(--brand-900);">4</div>
+                  <div style="font-size:0.72rem; font-weight:600; color:var(--slate-500);">Pokja Aktif (I–IV)</div>
+                </div>
+                <div
+                  style="background:var(--bg-surface); border:1px solid var(--border-light); border-radius:var(--radius-md); padding:12px; text-align:center;">
+                  <div style="font-size:1.6rem; font-weight:800; color:var(--brand-900);">461</div>
+                  <div style="font-size:0.72rem; font-weight:600; color:var(--slate-500);">Anggota Terdaftar</div>
+                </div>
+              </div>
+
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <span class="tag-pill-item"
+                  style="background:var(--brand-100); color:var(--brand-900); border-color:var(--brand-200);"><i
+                    class="fa-solid fa-check" style="margin-right:4px;"></i> Dapur Sehat Stunting</span>
+                <span class="tag-pill-item"
+                  style="background:var(--brand-100); color:var(--brand-900); border-color:var(--brand-200);"><i
+                    class="fa-solid fa-check" style="margin-right:4px;"></i> Kerajinan Ibu PKK</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Posyandu Integrasi Timeline & Image -->
+          <div class="grid-2col" style="margin-bottom: 32px;">
+            <div
+              style="background:var(--bg-surface-alt); border:1px solid var(--border-light); border-radius:var(--radius-xl); padding:28px;">
+              <div
+                style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--brand-700); margin-bottom:6px;">
+                Layanan Terpadu</div>
+              <h3 style="font-size:1.15rem; font-weight:800; color:var(--slate-900); margin-bottom:16px;">Posyandu
+                Integrasi Siklus Hidup</h3>
+
+              <div class="timeline-vertical">
+                <div class="timeline-item-node">
+                  <h4 style="font-size:0.9rem; font-weight:700; color:var(--slate-900);">Posyandu Balita &amp; Ibu Hamil
+                  </h4>
+                  <p style="font-size:0.8rem; color:var(--slate-600);">Pemeriksaan tumbuh kembang, imunisasi dasar, dan
+                    penimbangan rutin.</p>
+                </div>
+                <div class="timeline-item-node">
+                  <h4 style="font-size:0.9rem; font-weight:700; color:var(--slate-900);">Posyandu Remaja</h4>
+                  <p style="font-size:0.8rem; color:var(--slate-600);">Konseling gizi remaja, pemeriksaan anemia, dan
+                    edukasi pola hidup bersih.</p>
+                </div>
+                <div class="timeline-item-node">
+                  <h4 style="font-size:0.9rem; font-weight:700; color:var(--slate-900);">Posyandu Lansia</h4>
+                  <p style="font-size:0.8rem; color:var(--slate-600);">Pemeriksaan kesehatan berkala, cek gula darah,
+                    dan senam kebugaran lansia.</p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style="border-radius:var(--radius-xl); overflow:hidden; border:1px solid var(--border-light); height:100%; min-height:260px;">
+              <img src="assets/profil.png" alt="Posyandu Desa Ngawen"
+                style="width:100%; height:100%; object-fit:cover;">
+            </div>
+          </div>
+
+          <!-- Other Groups 4 Grid -->
+          <div class="section-heading-block">
+            <div class="section-eyebrow">Organisasi Warga</div>
+            <h3 class="section-main-title">Kelompok Masyarakat Lainnya</h3>
+          </div>
+
+          <div class="grid-4col">
+            <div class="group-organization-card">
+              <div class="group-icon-halo"><i class="fa-solid fa-user-group"></i></div>
+              <h4 style="font-size:0.9rem; font-weight:700; margin-bottom:4px;">Karang Taruna</h4>
+              <p style="font-size:0.8rem; color:var(--slate-600);">Wadah pemuda dalam kegiatan olahraga, seni budaya,
+                dan keorganisasian.</p>
+            </div>
+            <div class="group-organization-card">
+              <div class="group-icon-halo"><i class="fa-solid fa-shield-halved"></i></div>
+              <h4 style="font-size:0.9rem; font-weight:700; margin-bottom:4px;">Linmas Desa</h4>
+              <p style="font-size:0.8rem; color:var(--slate-600);">Satuan perlindungan masyarakat untuk ketertiban dan
+                keamanan dusun.</p>
+            </div>
+            <div class="group-organization-card">
+              <div class="group-icon-halo"><i class="fa-solid fa-wheat-awn"></i></div>
+              <h4 style="font-size:0.9rem; font-weight:700; margin-bottom:4px;">Kelompok Tani</h4>
+              <p style="font-size:0.8rem; color:var(--slate-600);">Wadah gabungan petani dalam distribusi alokasi pupuk
+                dan air irigasi.</p>
+            </div>
+            <div class="group-organization-card">
+              <div class="group-icon-halo"><i class="fa-solid fa-building-wheat"></i></div>
+              <h4 style="font-size:0.9rem; font-weight:700; margin-bottom:4px;">Gapoktan Ngawen</h4>
+              <p style="font-size:0.8rem; color:var(--slate-600);">Gabungan Kelompok Tani untuk pemasaran panen dan
+                modernisasi pertanian.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION 6: PROFIL WILAYAH & TATA GUNA LAHAN
+           ===================================================== -->
+      <section id="sec-wilayah" class="page-section">
+
+        <!-- Header Strip -->
+        <div class="section-header-strip">
+          <div class="strip-title-badge">
+            <div class="strip-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div>
+              <div class="strip-eyebrow">Profil Geografis</div>
+              <div class="strip-subtext">Batas Batas Administratif, Peta Interaktif &amp; Tata Guna Lahan</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-content">
+
+          <!-- Batas Administratif & Map Grid -->
+          <div class="grid-2col" style="margin-bottom: 32px;">
+            <div>
+              <div class="section-heading-block" style="margin-bottom:16px;">
+                <div class="section-eyebrow">Lokasi &amp; Batas</div>
+                <h3 class="section-main-title">Batas Administratif Desa</h3>
+              </div>
+
+              <div class="batas-card-grid" style="margin-bottom: 20px;">
+                <div class="batas-card-item">
+                  <div class="dir-badge">U</div>
+                  <div>
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--slate-500);">Utara</div>
+                    <div style="font-size:0.9rem; font-weight:700; color:var(--slate-900);">Desa Pucungrejo</div>
+                  </div>
+                </div>
+                <div class="batas-card-item">
+                  <div class="dir-badge">S</div>
+                  <div>
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--slate-500);">Selatan</div>
+                    <div style="font-size:0.9rem; font-weight:700; color:var(--slate-900);">Desa Keji</div>
+                  </div>
+                </div>
+                <div class="batas-card-item">
+                  <div class="dir-badge">B</div>
+                  <div>
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--slate-500);">Barat</div>
+                    <div style="font-size:0.9rem; font-weight:700; color:var(--slate-900);">Desa Ngrajek</div>
+                  </div>
+                </div>
+                <div class="batas-card-item">
+                  <div class="dir-badge">T</div>
+                  <div>
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--slate-500);">Timur</div>
+                    <div style="font-size:0.9rem; font-weight:700; color:var(--slate-900);">Desa Congkrang</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Google Maps Embed — Tampilan Real Google Maps -->
+              <div>
+                <!-- Header Peta -->
+                <div
+                  style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                  <div
+                    style="font-size:0.8rem; font-weight:700; color:var(--slate-900); display:flex; align-items:center; gap:8px;">
+                    <i class="fa-brands fa-google" style="color:#4285F4; font-size:1rem;"></i>
+                    <span>Google Maps — Desa Ngawen, Kec. Muntilan</span>
+                    <a href="https://maps.app.goo.gl/sN8yUAfaAa3Qerc39" target="_blank" rel="noopener"
+                      style="font-size:0.72rem; color:#4285F4; background:rgba(66,133,244,0.1); padding:2px 8px; border-radius:12px; text-decoration:none; font-weight:600; border:1px solid rgba(66,133,244,0.2);">
+                      <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka di Google Maps
+                    </a>
+                  </div>
+                  <!-- Tab Switcher: Jalan / Satelit -->
+                  <div style="display:flex; gap:4px; background:#f1f5f9; padding:3px; border-radius:8px;">
+                    <button id="gmapTabJalan" onclick="switchGmapView('jalan')"
+                      style="font-size:0.72rem; font-weight:700; padding:4px 12px; border-radius:6px; border:none; cursor:pointer; background:#4285F4; color:#fff; transition:all 0.2s;">
+                      <i class="fa-solid fa-road"></i> Jalan
+                    </button>
+                    <button id="gmapTabSatelit" onclick="switchGmapView('satelit')"
+                      style="font-size:0.72rem; font-weight:700; padding:4px 12px; border-radius:6px; border:none; cursor:pointer; background:transparent; color:#64748b; transition:all 0.2s;">
+                      <i class="fa-solid fa-satellite"></i> Satelit
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Leaflet Interactive Map Container (Hidden Failsafe for Script Bindings) -->
+                <div id="map" style="display:none;"></div>
+
+                <!-- Google Maps iframe Embed -->
+                <div
+                  style="position:relative; border-radius:12px; overflow:hidden; border:1.5px solid #e2e8f0; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+                  <iframe id="gmapEmbed"
+                    src="https://maps.google.com/maps?q=Ngawen,+Kec.+Muntilan,+Kabupaten+Magelang,+Jawa+Tengah&t=m&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%" height="400" style="display:block; border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Peta Google Maps Desa Ngawen, Kec. Muntilan, Kabupaten Magelang"></iframe>
+                  <!-- Overlay badge -->
+                  <div
+                    style="position:absolute; bottom:8px; left:8px; background:rgba(255,255,255,0.92); backdrop-filter:blur(8px); padding:4px 10px; border-radius:20px; font-size:0.68rem; font-weight:700; color:#1e293b; border:1px solid rgba(255,255,255,0.8); box-shadow:0 2px 8px rgba(0,0,0,0.1); pointer-events:none;">
+                    <i class="fa-brands fa-google" style="color:#4285F4;"></i> Google Maps · Desa Ngawen
+                  </div>
+                </div>
+
+                <!-- Lokasi Penting Cards -->
+                <div style="margin-top:12px;">
+                  <div
+                    style="font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:var(--slate-500); margin-bottom:8px;">
+                    Lokasi Penting</div>
+                  <div class="lokasi-cards-grid" id="lokasiCards">
+                    <a href="https://www.google.com/maps/search/?api=1&query=-7.6010,110.2688" target="_blank"
+                      rel="noopener" class="lokasi-card-item" data-category="wisata">
+                      <div class="lokasi-card-icon" style="background:linear-gradient(135deg,#0f3822,#1b5e3a);"><i
+                          class="fa-solid fa-landmark"></i></div>
+                      <div class="lokasi-card-info">
+                        <div class="lokasi-card-name">Situs Candi Ngawen</div>
+                        <div class="lokasi-card-cat">Wisata Budaya</div>
+                      </div>
+                    </a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=-7.6029,110.2683" target="_blank"
+                      rel="noopener" class="lokasi-card-item" data-category="publik">
+                      <div class="lokasi-card-icon" style="background:linear-gradient(135deg,#b45309,#d97706);"><i
+                          class="fa-solid fa-building-columns"></i></div>
+                      <div class="lokasi-card-info">
+                        <div class="lokasi-card-name">Balai Desa Ngawen</div>
+                        <div class="lokasi-card-cat">Pemerintahan</div>
+                      </div>
+                    </a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=-7.6055,110.2645" target="_blank"
+                      rel="noopener" class="lokasi-card-item" data-category="tani">
+                      <div class="lokasi-card-icon" style="background:linear-gradient(135deg,#7c2d12,#ea580c);"><i
+                          class="fa-solid fa-hammer"></i></div>
+                      <div class="lokasi-card-info">
+                        <div class="lokasi-card-name">Sentra Kerajinan Clapar</div>
+                        <div class="lokasi-card-cat">UMKM & Kerajinan</div>
+                      </div>
+                    </a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=-7.6070,110.2720" target="_blank"
+                      rel="noopener" class="lokasi-card-item" data-category="wisata">
+                      <div class="lokasi-card-icon" style="background:linear-gradient(135deg,#0284c7,#0369a1);"><i
+                          class="fa-solid fa-water"></i></div>
+                      <div class="lokasi-card-info">
+                        <div class="lokasi-card-name">River Tubing Blongkeng</div>
+                        <div class="lokasi-card-cat">Wisata Alam</div>
+                      </div>
+                    </a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=-7.5995,110.2710" target="_blank"
+                      rel="noopener" class="lokasi-card-item" data-category="publik">
+                      <div class="lokasi-card-icon" style="background:linear-gradient(135deg,#475569,#334155);"><i
+                          class="fa-solid fa-utensils"></i></div>
+                      <div class="lokasi-card-info">
+                        <div class="lokasi-card-name">Sentra Kuliner Jemunak</div>
+                        <div class="lokasi-card-cat">Kuliner Tradisional</div>
+                      </div>
+                    </a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=-7.6035,110.2678" target="_blank"
+                      rel="noopener" class="lokasi-card-item" data-category="publik">
+                      <div class="lokasi-card-icon" style="background:linear-gradient(135deg,#dc2626,#ef4444);"><i
+                          class="fa-solid fa-hospital-user"></i></div>
+                      <div class="lokasi-card-info">
+                        <div class="lokasi-card-name">Posyandu / PKD Ngawen</div>
+                        <div class="lokasi-card-cat">Kesehatan</div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Landscape Image Card -->
+            <div
+              style="border-radius:var(--radius-xl); overflow:hidden; border:1px solid var(--border-light); height:100%; min-height:300px;">
+              <img src="assets/profil.png" alt="Lanskap Desa Ngawen" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+          </div>
+
+          <!-- Tata Guna Lahan Donut & Hero Grid -->
+          <div class="grid-2col">
+            <!-- Donut Chart Box -->
+            <div class="chart-box-wrapper">
+              <div
+                style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--brand-700); margin-bottom:4px;">
+                Tata Guna Lahan</div>
+              <h4 style="font-size:1.05rem; font-weight:800; margin-bottom:12px;">Persentase Peruntukan Lahan</h4>
+              <div class="chart-canvas-container"
+                style="height:200px; min-height:180px; position:relative; display:flex; align-items:center; justify-content:center;">
+                <canvas id="landUseChart"></canvas>
+                <div class="standalone-donut-svg"
+                  style="width:100%; height:100%; min-height:180px; display:flex; align-items:center; justify-content:center; position:relative;">
+                  <svg viewBox="0 0 42 42"
+                    style="width:100%; height:100%; max-height:180px; transform: rotate(-90deg);">
+                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#22c55e" stroke-width="5"
+                      stroke-dasharray="68.2 31.8" stroke-dashoffset="0"></circle>
+                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fbbf24" stroke-width="5"
+                      stroke-dasharray="22.4 77.6" stroke-dashoffset="-68.2"></circle>
+                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#0284c7" stroke-width="5"
+                      stroke-dasharray="6.1 93.9" stroke-dashoffset="-90.6"></circle>
+                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#94a3b8" stroke-width="5"
+                      stroke-dasharray="3.3 96.7" stroke-dashoffset="-96.7"></circle>
+                  </svg>
+                  <div
+                    style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center; pointer-events:none;">
+                    <div style="font-size:1.15rem; font-weight:800; color:var(--slate-900); line-height:1;">202.8</div>
+                    <div style="font-size:0.68rem; font-weight:600; color:var(--slate-500); margin-top:2px;">Hektar
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Data Breakdown List (High Contrast & Always Visible) -->
+              <div class="land-use-legend-list" id="landUseLegendList"
+                style="margin-top:14px; display:flex; flex-direction:column; gap:8px;">
+                <div
+                  style="display:flex; align-items:center; justify-content:space-between; font-size:0.8rem; padding:6px 10px; background:rgba(34,197,94,0.12); border-radius:6px; border-left:3px solid #22c55e;">
+                  <span style="font-weight:600;"><i class="fa-solid fa-wheat-awn"
+                      style="color:#22c55e; margin-right:6px;"></i> Sawah &amp; Pertanian</span>
+                  <span style="font-weight:800; color:#22c55e;">68.2%</span>
+                </div>
+                <div
+                  style="display:flex; align-items:center; justify-content:space-between; font-size:0.8rem; padding:6px 10px; background:rgba(251,191,36,0.12); border-radius:6px; border-left:3px solid #fbbf24;">
+                  <span style="font-weight:600;"><i class="fa-solid fa-house-chimney"
+                      style="color:#fbbf24; margin-right:6px;"></i> Pemukiman Warga</span>
+                  <span style="font-weight:800; color:#f59e0b;">22.4%</span>
+                </div>
+                <div
+                  style="display:flex; align-items:center; justify-content:space-between; font-size:0.8rem; padding:6px 10px; background:rgba(2,132,199,0.12); border-radius:6px; border-left:3px solid #0284c7;">
+                  <span style="font-weight:600;"><i class="fa-solid fa-building"
+                      style="color:#0284c7; margin-right:6px;"></i> Fasilitas Umum &amp; Jalan</span>
+                  <span style="font-weight:800; color:#0284c7;">6.1%</span>
+                </div>
+                <div
+                  style="display:flex; align-items:center; justify-content:space-between; font-size:0.8rem; padding:6px 10px; background:rgba(148,163,184,0.12); border-radius:6px; border-left:3px solid #94a3b8;">
+                  <span style="font-weight:600;"><i class="fa-solid fa-tree"
+                      style="color:#94a3b8; margin-right:6px;"></i> Perkebunan &amp; Lainnya</span>
+                  <span style="font-weight:800; color:#94a3b8;">3.3%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Land Hero Dark Card -->
+            <div class="land-use-hero-card">
+              <div>
+                <div
+                  style="font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#a7f3d0; margin-bottom:8px;">
+                  Luas Wilayah Total</div>
+                <div class="big-area"><span class="counter-num" data-target="0">202.8</span> <span>Hektar</span>
+                </div>
+                <p style="font-size:0.85rem; color:#d1fae5; margin-top:8px; line-height:1.6;">
+                  Kawasan terbagi efisien antara lahan persawahan irigasi teknis dan pemukiman warga.
+                </p>
+              </div>
+
+              <div class="land-use-stats-grid">
+                <div>
+                  <div style="font-size:0.7rem; font-weight:700; color:#a7f3d0;">KETINGGIAN</div>
+                  <div style="font-size:0.95rem; font-weight:800; color:#ffffff;">320 m dpl</div>
+                </div>
+                <div>
+                  <div style="font-size:0.7rem; font-weight:700; color:#a7f3d0;">KEPADATAN</div>
+                  <div style="font-size:0.95rem; font-weight:800; color:#ffffff;">138.9/Ha</div>
+                </div>
+                <div>
+                  <div style="font-size:0.7rem; font-weight:700; color:#a7f3d0;">IRIGASI</div>
+                  <div style="font-size:0.95rem; font-weight:800; color:#ffffff;">Teknis</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: PETA & DIREKTORI UMKM DESA NGAWEN
+           ===================================================== -->
+      <section id="sec-umkm" class="page-section">
+
+        <!-- Header Strip -->
+        <div class="section-header-strip">
+          <div class="strip-title-badge">
+            <div class="strip-icon" style="background: linear-gradient(135deg, #15803d, #166534);"><i
+                class="fa-solid fa-store"></i></div>
+            <div>
+              <div class="strip-eyebrow">Ekonomi Kreatif &amp; Usaha Warga</div>
+              <div class="strip-subtext">Peta Interaktif &amp; Lokasi Google Maps 14 UMKM Desa Ngawen</div>
+            </div>
+          </div>
+          <span class="potensi-badge-tag"
+            style="background: rgba(34, 197, 94, 0.15); color: #15803d; border: 1px solid rgba(34, 197, 94, 0.3);">
+            <i class="fa-solid fa-map-location-dot"></i> 14 Lokasi Terverifikasi
+          </span>
+        </div>
+
+        <div class="section-content">
+
+          <!-- UMKM Control Bar: Filter Pills & Live Search -->
+          <div class="umkm-controls-bar">
+            <!-- Search Input -->
+            <div class="umkm-search-box">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="umkmSearchInput"
+                placeholder="Cari nama UMKM atau jenis usaha (misal: Serabi, Gethuk, Ronce)...">
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="umkm-filter-pills" id="umkmFilterPills">
+              <button class="umkm-filter-btn active" data-filter="all">
+                <i class="fa-solid fa-layer-group"></i> Semua UMKM <span class="pill-count" id="countAll">14</span>
+              </button>
+              <button class="umkm-filter-btn" data-filter="kuliner">
+                <i class="fa-solid fa-utensils"></i> Kuliner &amp; Jajanan <span class="pill-count"
+                  id="countKuliner">8</span>
+              </button>
+              <button class="umkm-filter-btn" data-filter="kerajinan">
+                <i class="fa-solid fa-palette"></i> Kerajinan &amp; Seni <span class="pill-count"
+                  id="countKerajinan">3</span>
+              </button>
+              <button class="umkm-filter-btn" data-filter="warung">
+                <i class="fa-solid fa-shop"></i> Warung &amp; Toko <span class="pill-count" id="countWarung">2</span>
+              </button>
+              <button class="umkm-filter-btn" data-filter="pertanian">
+                <i class="fa-solid fa-seedling"></i> Pertanian &amp; Bunga <span class="pill-count"
+                  id="countPertanian">1</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive UMKM Map Container & Embedded View -->
+          <div class="umkm-map-card">
+            <div class="umkm-map-header">
+              <div class="umkm-map-title">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>Peta Persebaran Lokasi UMKM Desa Ngawen</span>
+              </div>
+              <div class="umkm-map-badge">
+                <i class="fa-brands fa-google"></i> Google Maps Linked
+              </div>
+            </div>
+
+            <!-- Leaflet Map Container for UMKM -->
+            <div id="mapUmkm"
+              style="height: 380px; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-light, #e2e8f0); position: relative; z-index: 1;">
+            </div>
+          </div>
+
+          <!-- UMKM Directory Cards Grid -->
+          <div class="umkm-cards-grid" id="umkmCardsGrid">
+            <!-- Rendered dynamically by JavaScript -->
+          </div>
+
+          <!-- Empty State when filter yields 0 results -->
+          <div id="umkmEmptyState" class="umkm-empty-state" style="display: none;">
+            <i class="fa-solid fa-store-slash"></i>
+            <h4>UMKM Tidak Ditemukan</h4>
+            <p>Tidak ada usaha yang sesuai dengan kata kunci atau kategori filter yang dipilih.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =====================================================
+           ASPIRASI & LAYANAN PENGADUAN WARGA BANNER
+           ===================================================== -->
+      <section class="aspirasi-banner-card">
+        <div class="aspirasi-banner-grid">
+          <!-- Left Column: Tag, Title, Description & Action Buttons -->
+          <div class="aspirasi-left-col">
+            <div class="aspirasi-tag"><i class="fa-solid fa-bullhorn"></i> LAYANAN TRANSPARANSI WARGA</div>
+            <h3>Aspirasi &amp; Pengaduan Online Desa Ngawen</h3>
+            <p>Sampaikan kritik, saran, atau laporan seputar pelayanan desa dan fasilitas publik secara cepat,
+              transparan, dan dapat dilacak status penanganannya.</p>
+
+            <div class="aspirasi-buttons-wrap">
+              <button class="btn-aspirasi-trigger btn-aspirasi-primary" id="openPengaduanBtn">
+                <i class="fa-solid fa-paper-plane"></i> Buat Laporan Warga
+              </button>
+              <button class="btn-aspirasi-trigger btn-aspirasi-outline" id="openCekStatusBtn">
+                <i class="fa-solid fa-magnifying-glass"></i> Cek Status Laporan
+              </button>
+              <button class="btn-aspirasi-trigger btn-aspirasi-outline" id="openLayananSuratBtn">
+                <i class="fa-solid fa-file-signature"></i> Syarat Surat Digital
+              </button>
+              <button class="btn-aspirasi-trigger btn-aspirasi-gold" id="openPermohonanSuratBtn">
+                <i class="fa-solid fa-file-invoice"></i> Permohonan Surat Online
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column: Direct WhatsApp Contacts List -->
+          <div class="aspirasi-right-col">
+            <div class="aduan-wa-title">
+              <i class="fa-solid fa-headset"></i> Aduan Online — Hubungi Langsung via WhatsApp
+            </div>
+            <div class="aduan-wa-inline-list">
+              <!-- Posbankum -->
+              <a href="https://wa.me/6283149851094?text=Assalamualaikum%2C%20saya%20ingin%20menyampaikan%20aduan%20terkait%20Pos%20Bantuan%20Hukum%20Desa%20Ngawen."
+                target="_blank" rel="noopener" class="aduan-wa-inline-item" data-custom-wa="true" id="wa-posbankum">
+                <i class="fa-brands fa-whatsapp wa-icon-green"></i>
+                <span>Posbankum: <strong>+62 831-4985-1094</strong> (Yuli / Handoko)</span>
+              </a>
+              <!-- Desa Wisata -->
+              <a href="https://wa.me/6287834485779?text=Assalamualaikum%2C%20saya%20ingin%20menyampaikan%20aduan%20terkait%20Desa%20Wisata%20Ngawen."
+                target="_blank" rel="noopener" class="aduan-wa-inline-item" data-custom-wa="true" id="wa-desawisata">
+                <i class="fa-brands fa-whatsapp wa-icon-green"></i>
+                <span>Desa Wisata: <strong>+62 878-3448-5779</strong> (Titik N)</span>
+              </a>
+              <!-- Ambulans Desa -->
+              <a href="https://wa.me/6285298777565?text=Assalamualaikum%2C%20saya%20membutuhkan%20layanan%20Ambulans%20Desa%20Ngawen."
+                target="_blank" rel="noopener" class="aduan-wa-inline-item" data-custom-wa="true" id="wa-ambulans">
+                <i class="fa-brands fa-whatsapp wa-icon-green"></i>
+                <span>Ambulans Desa: <strong>+62 852-9877-7565</strong> (Rosad U)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Real-time Sync Indicator Toast -->
+      <div id="liveSyncToast"
+        style="position:fixed; bottom:20px; left:20px; z-index:9999; background:rgba(15, 56, 34, 0.94); color:#ffffff; backdrop-filter:blur(8px); padding:8px 16px; border-radius:30px; font-size:0.8rem; font-weight:700; box-shadow:0 6px 20px rgba(0,0,0,0.25); display:none; align-items:center; gap:8px; border:1px solid rgba(251,191,36,0.6);">
+        <i class="fa-solid fa-bolt" style="color:#fbbf24; font-size:0.95rem;"></i>
+        <span>Data Website Diperbarui Live!</span>
+      </div>
+
+      <!-- =====================================================
+           SECTION: BERITA & PENGUMUMAN DESA
+           ===================================================== -->
+      <section id="sec-berita" class="page-section content-section">
+        <div class="section-header-strip">
+          <div class="section-eyebrow"><i class="fa-solid fa-newspaper"></i> Warta Desa</div>
+          <h2 class="section-main-title">Berita &amp; Pengumuman Desa Ngawen</h2>
+          <p class="section-subtitle">Ikuti perkembangan terkini, program kerja, dan kegiatan resmi Pemerintah Desa
+            Ngawen.</p>
+        </div>
+
+        <!-- Search & Filter Bar -->
+        <div class="berita-controls-bar">
+          <div class="berita-search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="beritaSearchInput" placeholder="Cari berita, topik, atau kata kunci..."
+              autocomplete="off">
+          </div>
+          <div class="berita-filter-pills" id="beritaFilterPills">
+            <button class="berita-filter-pill active" data-filter="Semua">Semua</button>
+            <button class="berita-filter-pill" data-filter="Prestasi"><i class="fa-solid fa-trophy"></i>
+              Prestasi</button>
+            <button class="berita-filter-pill" data-filter="Pembangunan"><i class="fa-solid fa-hammer"></i>
+              Pembangunan</button>
+            <button class="berita-filter-pill" data-filter="Kesehatan"><i class="fa-solid fa-heart-pulse"></i>
+              Kesehatan</button>
+            <button class="berita-filter-pill" data-filter="Kebudayaan"><i class="fa-solid fa-torii-gate"></i>
+              Kebudayaan</button>
+            <button class="berita-filter-pill" data-filter="Lingkungan"><i class="fa-solid fa-leaf"></i>
+              Lingkungan</button>
+            <button class="berita-filter-pill" data-filter="Pelayanan"><i class="fa-solid fa-headset"></i>
+              Pelayanan</button>
+          </div>
+        </div>
+
+        <!-- Berita Cards Grid -->
+        <div class="berita-cards-grid" id="beritaCardsGrid">
+          <!-- Dynamically populated from CMS data -->
+          <div class="berita-loading-state">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <p>Memuat berita terbaru...</p>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="berita-empty-state" id="beritaEmptyState" style="display:none;">
+          <i class="fa-solid fa-newspaper"></i>
+          <h4>Belum ada berita ditemukan</h4>
+          <p>Coba ubah filter atau kata kunci pencarian Anda.</p>
+        </div>
+
+        <!-- CTA to Full Standalone News Page -->
+        <div style="text-align:center; margin-top:28px;">
+          <a href="berita.html" class="btn-gold-action"
+            style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; padding:12px 28px; font-weight:700;">
+            <i class="fa-solid fa-newspaper"></i> Lihat Semua Berita &amp; Pengumuman Desa <i
+              class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- =========================================================
+       BERITA ARTICLE READER MODAL
+       ========================================================= -->
+  <div class="modal-overlay" id="beritaModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-card berita-modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="berita-modal-kategori" id="beritaModalKategori">Berita</span>
+          <h3 class="modal-title" id="beritaModalTitle">Judul Berita</h3>
+        </div>
+        <button class="modal-close-btn" id="beritaModalCloseBtn" aria-label="Tutup"><i
+            class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body berita-modal-body" id="beritaModalBody">
+        <div class="berita-modal-meta" id="beritaModalMeta"></div>
+        <div class="berita-modal-img-wrap" id="beritaModalImgWrap"></div>
+        <div class="berita-modal-isi" id="beritaModalIsi"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-close" id="beritaModalFooterClose">Tutup Artikel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+      <!-- =====================================================
+           SECTION: KONTAK RESMI & MEDIA SOSIAL DESA
+           ===================================================== -->
+  <section id="sec-kontak" class="page-section"
+    style="background:var(--bg-section-alt, #f0fdf4); border-top:1px solid var(--border-light, #e2e8f0);">
+    <div class="section-header-strip">
+      <div class="strip-title-badge">
+        <div class="strip-icon"><i class="fa-solid fa-address-book"></i></div>
+        <div>
+          <div class="strip-eyebrow">Kontak & Pelayanan</div>
+          <div class="strip-subtext">Hubungi Pemerintah Desa Ngawen — Layanan Publik Siap Melayani</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-content">
+      <div class="grid-2col" style="align-items:start; gap:24px;">
+        <!-- Kontak Info -->
+        <div
+          style="background:var(--bg-surface, #fff); border-radius:16px; padding:28px; border:1px solid var(--border-light, #e2e8f0); box-shadow:0 2px 12px rgba(0,0,0,0.05);">
+          <div
+            style="font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--brand-700); margin-bottom:8px;">
+            Kontak Resmi Pemdes</div>
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--slate-900); margin-bottom:6px;">Kantor Pemerintah
+            Desa Ngawen</h3>
+          <p style="font-size:0.85rem; color:var(--slate-500); margin-bottom:20px; line-height:1.6;">Ngawen, Kec.
+            Muntilan, Kab. Magelang, Jawa Tengah · <strong>Kode Pos 56451</strong></p>
+
+          <!-- Dinamis dari CMS -->
+          <div id="cms-kontak-info">
+            <!-- Rendered by script.js from CMS siteInfo.kontakResmi -->
+            <div style="display:flex; flex-wrap:wrap; gap:10px;">
+              <a href="tel:08122776655"
+                style="display:flex; align-items:center; gap:8px; padding:8px 16px; background:rgba(34,197,94,0.12); border-radius:30px; font-size:0.85rem; font-weight:700; color:var(--brand-900); text-decoration:none; border:1px solid rgba(34,197,94,0.25);">
+                <i class="fa-solid fa-phone" style="color:#22c55e;"></i> <span data-kontak="telepon">(0293)</span>
+              </a>
+              <a href="https://wa.me/6287756655004" target="_blank" rel="noopener"
+                style="display:flex; align-items:center; gap:8px; padding:8px 16px; background:rgba(34,197,94,0.12); border-radius:30px; font-size:0.85rem; font-weight:700; color:#065f46; text-decoration:none; border:1px solid rgba(34,197,94,0.25);">
+                <i class="fa-brands fa-whatsapp" style="color:#25D366; font-size:1rem;"></i> <span
+                  data-kontak="whatsapp">087756655004</span>
+              </a>
+              <a href="mailto:Pemdesangawen@gmail.com"
+                style="display:flex; align-items:center; gap:8px; padding:8px 16px; background:rgba(2,132,199,0.12); border-radius:30px; font-size:0.85rem; font-weight:700; color:#0369a1; text-decoration:none; border:1px solid rgba(2,132,199,0.25);">
+                <i class="fa-solid fa-envelope" style="color:#0284c7;"></i> <span
+                  data-kontak="email">Pemdesangawen@gmail.com</span>
+              </a>
+              <a href="https://instagram.com/pemdes_ngawen" target="_blank" rel="noopener"
+                style="display:flex; align-items:center; gap:8px; padding:8px 16px; background:rgba(168,85,247,0.12); border-radius:30px; font-size:0.85rem; font-weight:700; color:#6b21a8; text-decoration:none; border:1px solid rgba(168,85,247,0.25);">
+                <i class="fa-brands fa-instagram" style="color:#e1306c;"></i> <span
+                  data-kontak="instagram">@pemdes_ngawen</span>
+              </a>
+            </div>
+          </div>
+
+          <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border-light, #e2e8f0);">
+            <div
+              style="font-size:0.75rem; font-weight:700; color:var(--slate-500); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">
+              Jam Pelayanan Kantor</div>
+            <div style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem;">
+              <div style="display:flex; justify-content:space-between; color:var(--slate-700);">
+                <span><i class="fa-regular fa-clock" style="margin-right:6px; color:var(--brand-600);"></i> Senin –
+                  Kamis</span>
+                <span style="font-weight:700;">07.30 – 15.30 WIB</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; color:var(--slate-700);">
+                <span><i class="fa-regular fa-clock" style="margin-right:6px; color:var(--brand-600);"></i> Jumat</span>
+                <span style="font-weight:700;">07.30 – 11.00 WIB</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; color:var(--slate-400);">
+                <span><i class="fa-solid fa-ban" style="margin-right:6px;"></i> Sabtu – Minggu</span>
+                <span style="font-weight:700;">Libur</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portal & Media Sosial -->
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div
+            style="background:linear-gradient(135deg, #0f3822 0%, #1b5e3a 100%); border-radius:16px; padding:28px; color:#fff; box-shadow:0 8px 24px rgba(15,56,34,0.25);">
+            <div
+              style="font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#a7f3d0; margin-bottom:6px;">
+              Portal Resmi</div>
+            <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:10px;">Sistem Informasi Desa Ngawen</h3>
+            <p style="font-size:0.82rem; color:#d1fae5; line-height:1.6; margin-bottom:16px;">Akses portal pelayanan
+              digital, informasi administrasi, dan transparansi Pemerintah Desa Ngawen secara online.</p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a href="https://desangawen.magelangkab.go.id/First" target="_blank" rel="noopener"
+                style="display:flex; align-items:center; gap:6px; padding:8px 16px; background:rgba(255,255,255,0.15); border-radius:30px; font-size:0.82rem; font-weight:700; color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,0.3); transition:background 0.2s;">
+                <i class="fa-solid fa-globe"></i> Portal Lama
+              </a>
+              <a href="https://ngawen-2-0.netlify.app/" target="_blank" rel="noopener"
+                style="display:flex; align-items:center; gap:6px; padding:8px 16px; background:var(--gold-400, #fbbf24); border-radius:30px; font-size:0.82rem; font-weight:800; color:#0f3822; text-decoration:none; transition:opacity 0.2s;">
+                <i class="fa-solid fa-rocket"></i> Portal Baru v2.0
+              </a>
+            </div>
+          </div>
+
+          <div
+            style="background:var(--bg-surface, #fff); border-radius:16px; padding:24px; border:1px solid var(--border-light, #e2e8f0); box-shadow:0 2px 12px rgba(0,0,0,0.05);">
+            <div
+              style="font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--brand-700); margin-bottom:12px;">
+              Media Sosial Resmi</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <a href="https://www.youtube.com/@desangawen" target="_blank" rel="noopener"
+                style="display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; background:#f0fdf4; text-decoration:none; border:1px solid #bbf7d0; transition:background 0.2s;">
+                <div
+                  style="width:36px; height:36px; border-radius:8px; background:#ff0000; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <i class="fa-brands fa-youtube" style="color:#fff;"></i>
+                </div>
+                <div>
+                  <div style="font-size:0.82rem; font-weight:700; color:var(--slate-900);" data-kontak="youtube">Desa
+                    Ngawen Channel</div>
+                  <div style="font-size:0.72rem; color:var(--slate-500);">Dokumentasi kegiatan desa & video resmi</div>
+                </div>
+              </a>
+              <a href="https://instagram.com/pemdes_ngawen" target="_blank" rel="noopener"
+                style="display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; background:#f0fdf4; text-decoration:none; border:1px solid #bbf7d0; transition:background 0.2s;">
+                <div
+                  style="width:36px; height:36px; border-radius:8px; background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <i class="fa-brands fa-instagram" style="color:#fff;"></i>
+                </div>
+                <div>
+                  <div style="font-size:0.82rem; font-weight:700; color:var(--slate-900);" data-kontak="instagram">
+                    @pemdes_ngawen</div>
+                  <div style="font-size:0.72rem; color:var(--slate-500);">Berita, foto & informasi harian desa</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--
+       OFFICIAL GOVERNMENT FOOTER
+       ========================================================= -->
+  <footer class="gov-site-footer">
+    <div class="container footer-inner-content"
+      style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px;">
+      <div class="footer-brand-info">
+        <h3>Pemerintah Desa Ngawen</h3>
+        <p>Kecamatan Muntilan · Kabupaten Magelang · Jawa Tengah &nbsp;&copy;&nbsp;2026</p>
+        <div id="footer-kontak-info" style="margin-top:6px;">
+          <!-- Rendered dynamically by script.js -->
+          <a href="https://wa.me/6287756655004" target="_blank" rel="noopener"
+            style="display:flex; align-items:center; gap:6px; color:rgba(255,255,255,0.8); font-size:0.82rem; text-decoration:none; margin-bottom:4px;">
+            <i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> <span
+              data-kontak="whatsapp">087756655004</span>
+          </a>
+          <a href="mailto:Pemdesangawen@gmail.com"
+            style="display:flex; align-items:center; gap:6px; color:rgba(255,255,255,0.8); font-size:0.82rem; text-decoration:none; margin-bottom:4px;">
+            <i class="fa-solid fa-envelope"></i> <span data-kontak="email">Pemdesangawen@gmail.com</span>
+          </a>
+          <a href="https://instagram.com/pemdes_ngawen" target="_blank" rel="noopener"
+            style="display:flex; align-items:center; gap:6px; color:rgba(255,255,255,0.8); font-size:0.82rem; text-decoration:none;">
+            <i class="fa-brands fa-instagram"></i> <span data-kontak="instagram">@pemdes_ngawen</span>
+          </a>
+        </div>
+        <p class="footer-kkn-credit" style="margin-top:8px;">By, KKN Kilau Ngawen 2026 | Sekolah Tinggi Multi Media
+          Yogyakarta (STMM) MMTC</p>
+      </div>
+
+      <!-- Redirect Button -->
+      <a href="https://desangawen.magelangkab.go.id/First" class="btn-back-portal">
+        <i class="fa-solid fa-arrow-left"></i> Kembali ke Website Utama Desa Ngawen
+      </a>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       UNIVERSAL INTERACTIVE MODAL DIALOG
+       ========================================================= -->
+  <div class="modal-overlay" id="universalModal" aria-hidden="true" role="dialog">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">Detail Informasi</h3>
+        <button class="modal-close-btn" id="modalCloseBtn" aria-label="Tutup Dialog"><i
+            class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Dynamic content loaded via JS -->
+      </div>
+      <div class="modal-footer" id="modalFooter">
+        <button class="btn-modal-close" id="modalFooterCloseBtn">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       FLOATING BACK-TO-TOP BUTTON WITH SCROLL PROGRESS
+       ========================================================= -->
+  <button class="back-to-top-btn" id="backToTopBtn" aria-label="Kembali ke Atas" title="Kembali ke Atas">
+    <svg class="progress-ring" width="44" height="44">
+      <circle class="progress-ring-circle" stroke="var(--gold-400)" stroke-width="3" fill="transparent" r="18" cx="22"
+        cy="22" />
+    </svg>
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <!-- Leaflet.js Script -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Chart.js Script -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Security Module -->
+  <script src="js/security.js"></script>
+
+  <!-- CMS Data Engine -->
+  <script src="js/cms.js"></script>
+
+  <!-- Custom Script -->
+  <script src="js/script.js?v=2.1.0"></script>
+
+</body>
+
+</html>
