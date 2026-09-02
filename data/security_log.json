@@ -1,0 +1,1598 @@
+[
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "desktopThemeToggleBtn",
+    "label": "\"Mode Terang\"",
+    "timestamp": "2026-09-02T06:40:09.051Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dashboard\"",
+    "timestamp": "2026-09-02T06:31:55.809Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Laporan & Pengaduan\"",
+    "timestamp": "2026-09-02T06:31:55.004Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan & Backup\"",
+    "timestamp": "2026-09-02T06:26:08.848Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan User\"",
+    "timestamp": "2026-09-02T06:26:02.287Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-09-02T06:25:56.196Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"UMKM & Peta Usaha\"",
+    "timestamp": "2026-09-02T06:25:50.129Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-09-02T06:25:43.763Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-09-02T06:25:37.579Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dokumen Perdes & JDIH\"",
+    "timestamp": "2026-09-02T06:25:29.428Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Transparansi APBDes\"",
+    "timestamp": "2026-09-02T06:25:22.933Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Berita & Pengumuman\"",
+    "timestamp": "2026-09-02T06:25:16.795Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Wilayah & Dusun\"",
+    "timestamp": "2026-09-02T06:25:10.796Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kelembagaan & Kelompok\"",
+    "timestamp": "2026-09-02T06:25:05.951Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Potensi & Wisata\"",
+    "timestamp": "2026-09-02T06:25:00.901Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Perangkat Desa\"",
+    "timestamp": "2026-09-02T06:24:54.417Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Profil & Visi Misi\"",
+    "timestamp": "2026-09-02T06:24:49.245Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Tampilan & Branding\"",
+    "timestamp": "2026-09-02T06:24:42.063Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Layanan & Surat Digital\"",
+    "timestamp": "2026-09-02T06:24:36.509Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Laporan & Pengaduan\"",
+    "timestamp": "2026-09-02T06:24:31.167Z"
+  },
+  {
+    "type": "LOGIN_SUCCESS",
+    "username": "admin",
+    "ip": "::1",
+    "timestamp": "2026-09-02T06:24:22.840Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "submitLoginBtn",
+    "label": "\"Masuk Ke Panel CMS\"",
+    "timestamp": "2026-09-02T06:24:22.668Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "loginPassword",
+    "label": "Ubah [loginPassword]",
+    "detail": "***",
+    "timestamp": "2026-09-02T06:24:22.647Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "loginPassword",
+    "label": "#loginPassword",
+    "timestamp": "2026-09-02T06:24:18.099Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "loginUsername",
+    "label": "Ubah [loginUsername]",
+    "detail": "admin",
+    "timestamp": "2026-09-02T06:24:18.078Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "loginUsername",
+    "label": "#loginUsername",
+    "timestamp": "2026-09-02T06:24:13.428Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kelompok\"",
+    "timestamp": "2026-08-26T01:06:09.543Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kemasyarakatan\"",
+    "timestamp": "2026-08-26T01:06:06.305Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Potensi Desa\"",
+    "timestamp": "2026-08-26T01:05:53.757Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Semua\"",
+    "timestamp": "2026-08-26T01:02:02.917Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Prestasi\"",
+    "timestamp": "2026-08-26T01:02:02.014Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pelayanan\"",
+    "timestamp": "2026-08-26T01:02:00.921Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Lingkungan\"",
+    "timestamp": "2026-08-26T01:02:00.159Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kebudayaan\"",
+    "timestamp": "2026-08-26T01:01:58.722Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kesehatan\"",
+    "timestamp": "2026-08-26T01:01:57.446Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pembangunan\"",
+    "timestamp": "2026-08-26T01:01:55.762Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Potensi Desa\"",
+    "timestamp": "2026-08-26T01:01:36.518Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Wilayah & Lahan\"",
+    "timestamp": "2026-08-26T01:01:19.569Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kelompok\"",
+    "timestamp": "2026-08-26T01:01:10.766Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kemasyarakatan\"",
+    "timestamp": "2026-08-26T01:01:06.375Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Potensi Desa\"",
+    "timestamp": "2026-08-26T01:01:02.806Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "crudModalCloseBtn",
+    "label": "\"×\"",
+    "timestamp": "2026-08-26T00:59:07.592Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "mPotensiFile",
+    "label": "#mPotensiFile",
+    "timestamp": "2026-08-26T00:58:42.932Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Edit\"",
+    "timestamp": "2026-08-26T00:58:40.980Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "crudModalCloseBtn",
+    "label": "\"×\"",
+    "timestamp": "2026-08-26T00:58:31.793Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "mPotensiFile",
+    "label": "#mPotensiFile",
+    "timestamp": "2026-08-26T00:58:26.403Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Edit\"",
+    "timestamp": "2026-08-26T00:58:24.527Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "crudModalCancelBtn",
+    "label": "\"Batal\"",
+    "timestamp": "2026-08-26T00:57:57.554Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "mPotensiFile",
+    "label": "#mPotensiFile",
+    "timestamp": "2026-08-26T00:57:53.787Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Edit\"",
+    "timestamp": "2026-08-26T00:57:50.646Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Potensi & Wisata\"",
+    "timestamp": "2026-08-26T00:57:43.609Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kelembagaan & Kelompok\"",
+    "timestamp": "2026-08-26T00:57:42.610Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Wilayah & Dusun\"",
+    "timestamp": "2026-08-26T00:57:41.299Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Berita & Pengumuman\"",
+    "timestamp": "2026-08-26T00:57:34.273Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Transparansi APBDes\"",
+    "timestamp": "2026-08-26T00:57:31.317Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dokumen Perdes & JDIH\"",
+    "timestamp": "2026-08-26T00:57:30.165Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-08-26T00:57:28.886Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-08-26T00:57:27.567Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-08-26T00:57:26.078Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan User\"",
+    "timestamp": "2026-08-26T00:57:25.072Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan & Backup\"",
+    "timestamp": "2026-08-26T00:57:23.937Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan User\"",
+    "timestamp": "2026-08-26T00:57:22.438Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Tampilan & Branding\"",
+    "timestamp": "2026-08-26T00:57:19.072Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Perangkat Desa\"",
+    "timestamp": "2026-08-26T00:57:18.135Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Profil & Visi Misi\"",
+    "timestamp": "2026-08-26T00:57:16.511Z"
+  },
+  {
+    "type": "CONTENT_SAVED",
+    "by": "admin",
+    "ip": "::1",
+    "timestamp": "2026-08-26T00:56:46.162Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:56:46.021Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputProfil",
+    "label": "Ubah [fileInputProfil]",
+    "detail": "C:\\fakepath\\inline_image_preview.jpg",
+    "timestamp": "2026-08-26T00:56:43.552Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputProfil",
+    "label": "#fileInputProfil",
+    "timestamp": "2026-08-26T00:56:36.202Z"
+  },
+  {
+    "type": "CONTENT_SAVED",
+    "by": "admin",
+    "ip": "::1",
+    "timestamp": "2026-08-26T00:54:06.132Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:54:06.019Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputDemografi",
+    "label": "Ubah [fileInputDemografi]",
+    "detail": "C:\\fakepath\\gaema.jpeg",
+    "timestamp": "2026-08-26T00:54:02.884Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputDemografi",
+    "label": "#fileInputDemografi",
+    "timestamp": "2026-08-26T00:53:33.985Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputPkk",
+    "label": "Ubah [fileInputPkk]",
+    "detail": "C:\\fakepath\\IMG_4859 (2).jpg",
+    "timestamp": "2026-08-26T00:52:35.489Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputPkk",
+    "label": "#fileInputPkk",
+    "timestamp": "2026-08-26T00:52:19.109Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputCandi",
+    "label": "Ubah [fileInputCandi]",
+    "detail": "C:\\fakepath\\hanya-ini-candi-yang.jpg",
+    "timestamp": "2026-08-26T00:52:12.730Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputCandi",
+    "label": "#fileInputCandi",
+    "timestamp": "2026-08-26T00:52:07.610Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputBalaiDesa",
+    "label": "Ubah [fileInputBalaiDesa]",
+    "detail": "C:\\fakepath\\IMG_0161.jpg",
+    "timestamp": "2026-08-26T00:51:57.296Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputBalaiDesa",
+    "label": "\"C:\\fakepath\\273411255_463400955271593_5893290308367253705_n.\"",
+    "timestamp": "2026-08-26T00:51:13.076Z"
+  },
+  {
+    "type": "CONTENT_SAVED",
+    "by": "admin",
+    "ip": "::1",
+    "timestamp": "2026-08-26T00:50:12.816Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:50:12.772Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputBalaiDesa",
+    "label": "Ubah [fileInputBalaiDesa]",
+    "detail": "C:\\fakepath\\273411255_463400955271593_589329030836",
+    "timestamp": "2026-08-26T00:50:09.763Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputBalaiDesa",
+    "label": "#fileInputBalaiDesa",
+    "timestamp": "2026-08-26T00:50:07.681Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Tampilan & Branding\"",
+    "timestamp": "2026-08-26T00:50:01.801Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:47:05.772Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:47:05.551Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:47:04.946Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:47:04.041Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputCandi",
+    "label": "Ubah [fileInputCandi]",
+    "detail": "C:\\fakepath\\hanya-ini-candi-yang.jpg",
+    "timestamp": "2026-08-26T00:47:01.047Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputCandi",
+    "label": "#fileInputCandi",
+    "timestamp": "2026-08-26T00:46:50.776Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:46:36.399Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:46:36.230Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:46:35.814Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:46:35.584Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:46:35.337Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:46:34.625Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:46:32.186Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "PUBLIC",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pemerintahan\"",
+    "timestamp": "2026-08-26T00:46:26.494Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputBalaiDesa",
+    "label": "\"C:\\fakepath\\IMG_0160.jpg\"",
+    "timestamp": "2026-08-26T00:45:25.276Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputBalaiDesa",
+    "label": "Ubah [fileInputBalaiDesa]",
+    "detail": "C:\\fakepath\\IMG_0160.jpg",
+    "timestamp": "2026-08-26T00:44:30.378Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "fileInputBalaiDesa",
+    "label": "#fileInputBalaiDesa",
+    "timestamp": "2026-08-26T00:43:55.159Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "logoFileInput",
+    "label": "Ubah [logoFileInput]",
+    "detail": "C:\\fakepath\\Screenshot 2026-08-26 073351.png",
+    "timestamp": "2026-08-26T00:34:01.168Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "logoFileInput",
+    "label": "\"C:\\fakepath\\logo 1.png\"",
+    "timestamp": "2026-08-26T00:33:54.878Z"
+  },
+  {
+    "type": "CONTENT_SAVED",
+    "by": "admin",
+    "ip": "::1",
+    "timestamp": "2026-08-26T00:33:22.246Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:33:22.206Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "logoFileInput",
+    "label": "Ubah [logoFileInput]",
+    "detail": "C:\\fakepath\\logo 1.png",
+    "timestamp": "2026-08-26T00:33:19.130Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "input",
+    "elementId": "logoFileInput",
+    "label": "#logoFileInput",
+    "timestamp": "2026-08-26T00:33:11.189Z"
+  },
+  {
+    "type": "CONTENT_SAVED",
+    "by": "admin",
+    "ip": "::1",
+    "timestamp": "2026-08-26T00:32:25.357Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "saveAllBtn",
+    "label": "\"Simpan Semua Perubahan\"",
+    "timestamp": "2026-08-26T00:32:25.346Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "div",
+    "elementId": "",
+    "label": "\"Inter Portal Resmi Desa Ngawen — Membangun Desa, Merawat Tra\"",
+    "timestamp": "2026-08-26T00:32:22.279Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Tampilan & Branding\"",
+    "timestamp": "2026-08-26T00:32:18.284Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Laporan & Pengaduan\"",
+    "timestamp": "2026-08-26T00:32:16.999Z"
+  },
+  {
+    "type": "LOGIN_SUCCESS",
+    "username": "admin",
+    "ip": "::1",
+    "timestamp": "2026-08-26T00:32:12.878Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "quickLoginAdmin",
+    "label": "\"Superadmin\"",
+    "timestamp": "2026-08-26T00:32:12.774Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan & Backup\"",
+    "timestamp": "2026-08-25T12:40:29.086Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-08-25T12:37:59.116Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Transparansi APBDes\"",
+    "timestamp": "2026-08-25T12:37:56.871Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dokumen Perdes & JDIH\"",
+    "timestamp": "2026-08-25T12:37:55.467Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-08-25T12:37:54.301Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan & Backup\"",
+    "timestamp": "2026-08-25T12:37:35.516Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan User\"",
+    "timestamp": "2026-08-25T12:37:34.508Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-08-25T12:37:33.204Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "crudModalCloseBtn",
+    "label": "\"×\"",
+    "timestamp": "2026-08-25T12:37:31.406Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Edit\"",
+    "timestamp": "2026-08-25T12:37:29.772Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-08-25T12:37:25.827Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-08-25T12:37:21.593Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dokumen Perdes & JDIH\"",
+    "timestamp": "2026-08-25T12:37:20.476Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Transparansi APBDes\"",
+    "timestamp": "2026-08-25T12:37:19.523Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Berita & Pengumuman\"",
+    "timestamp": "2026-08-25T12:37:16.979Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Wilayah & Dusun\"",
+    "timestamp": "2026-08-25T12:37:15.811Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kelembagaan & Kelompok\"",
+    "timestamp": "2026-08-25T12:37:14.124Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Potensi & Wisata\"",
+    "timestamp": "2026-08-25T12:37:11.379Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kelembagaan & Kelompok\"",
+    "timestamp": "2026-08-25T12:37:10.427Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Potensi & Wisata\"",
+    "timestamp": "2026-08-25T12:37:09.675Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Perangkat Desa\"",
+    "timestamp": "2026-08-25T12:37:07.404Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Profil & Visi Misi\"",
+    "timestamp": "2026-08-25T12:37:06.092Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Tampilan & Branding\"",
+    "timestamp": "2026-08-25T12:37:04.140Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Layanan & Surat Digital\"",
+    "timestamp": "2026-08-25T12:37:02.908Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Transparansi APBDes\"",
+    "timestamp": "2026-08-25T12:33:21.579Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dokumen Perdes & JDIH\"",
+    "timestamp": "2026-08-25T12:33:21.164Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-08-25T12:33:20.683Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dokumen Perdes & JDIH\"",
+    "timestamp": "2026-08-25T12:33:20.107Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-08-25T12:33:19.235Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-08-25T12:33:18.475Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan & Backup\"",
+    "timestamp": "2026-08-25T12:33:14.509Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-08-25T12:33:14.020Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan User\"",
+    "timestamp": "2026-08-25T12:33:13.019Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan & Backup\"",
+    "timestamp": "2026-08-25T12:33:12.468Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan User\"",
+    "timestamp": "2026-08-25T12:33:11.867Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan & Backup\"",
+    "timestamp": "2026-08-25T12:27:22.764Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan User\"",
+    "timestamp": "2026-08-25T12:27:20.325Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-08-25T12:27:19.444Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-08-25T12:27:18.867Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-08-25T12:27:18.148Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-08-25T12:27:17.717Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Transparansi APBDes\"",
+    "timestamp": "2026-08-25T12:27:17.349Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Wilayah & Dusun\"",
+    "timestamp": "2026-08-25T12:27:16.540Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Berita & Pengumuman\"",
+    "timestamp": "2026-08-25T12:27:15.653Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Transparansi APBDes\"",
+    "timestamp": "2026-08-25T12:27:14.053Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dokumen Perdes & JDIH\"",
+    "timestamp": "2026-08-25T12:27:13.100Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-08-25T12:27:12.356Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-08-25T12:27:06.830Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-08-25T12:27:05.557Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-08-25T12:27:03.077Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-08-25T12:27:02.549Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-08-25T12:27:01.673Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-08-25T12:23:42.095Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-08-25T12:23:31.278Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-08-25T12:23:09.836Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dokumen Perdes & JDIH\"",
+    "timestamp": "2026-08-25T12:22:59.428Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Transparansi APBDes\"",
+    "timestamp": "2026-08-25T12:22:49.499Z"
+  },
+  {
+    "type": "LOGIN_SUCCESS",
+    "username": "admin",
+    "ip": "::1",
+    "timestamp": "2026-08-25T12:22:39.283Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "quickLoginAdmin",
+    "label": "\"Superadmin\"",
+    "timestamp": "2026-08-25T12:22:39.199Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Berita & Pengumuman\"",
+    "timestamp": "2026-08-25T12:22:32.566Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Transparansi APBDes\"",
+    "timestamp": "2026-08-25T12:22:32.132Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dokumen Perdes & JDIH\"",
+    "timestamp": "2026-08-25T12:22:31.740Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Demografi & Statistik\"",
+    "timestamp": "2026-08-25T12:22:31.284Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-08-25T12:22:30.765Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-08-25T12:22:29.596Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan User\"",
+    "timestamp": "2026-08-25T12:22:29.228Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan & Backup\"",
+    "timestamp": "2026-08-25T12:22:28.757Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan User\"",
+    "timestamp": "2026-08-25T12:22:19.267Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan & Backup\"",
+    "timestamp": "2026-08-25T12:22:16.870Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dashboard\"",
+    "timestamp": "2026-08-25T12:21:49.718Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Laporan & Pengaduan\"",
+    "timestamp": "2026-08-25T12:21:49.324Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Layanan & Surat Digital\"",
+    "timestamp": "2026-08-25T12:21:48.974Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Tampilan & Branding\"",
+    "timestamp": "2026-08-25T12:21:48.478Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Profil & Visi Misi\"",
+    "timestamp": "2026-08-25T12:21:47.845Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Perangkat Desa\"",
+    "timestamp": "2026-08-25T12:21:47.349Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Potensi & Wisata\"",
+    "timestamp": "2026-08-25T12:21:46.196Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kelembagaan & Kelompok\"",
+    "timestamp": "2026-08-25T12:21:45.412Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Wilayah & Dusun\"",
+    "timestamp": "2026-08-25T12:21:43.212Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kelembagaan & Kelompok\"",
+    "timestamp": "2026-08-25T12:21:42.516Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Wilayah & Dusun\"",
+    "timestamp": "2026-08-25T12:21:41.853Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Berita & Pengumuman\"",
+    "timestamp": "2026-08-25T12:21:41.420Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Transparansi APBDes\"",
+    "timestamp": "2026-08-25T12:21:39.701Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Dokumen Perdes & JDIH\"",
+    "timestamp": "2026-08-25T12:21:39.228Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Poin Penting Peta Desa\"",
+    "timestamp": "2026-08-25T12:21:38.797Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Pengaturan User\"",
+    "timestamp": "2026-08-25T12:21:38.429Z"
+  },
+  {
+    "type": "UI_CLICK",
+    "page": "ADMIN",
+    "tag": "button",
+    "elementId": "",
+    "label": "\"Kontak & Medsos\"",
+    "timestamp": "2026-08-25T12:21:32.924Z"
+  }
+]

@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#0f3822">
+  <title>CMS Admin Dashboard — Sistem Informasi Desa Ngawen</title>
+  <meta name="description" content="Panel administrasi CMS Desa Ngawen — kelola konten website desa secara real-time.">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Admin CSS -->
+  <link rel="stylesheet" href="css/admin.css?v=20260819">
+
+  <!-- CRITICAL: Early Theme & Auth Bootstrap (prevents white screen flashes) -->
+  <style id="authBootstrapStyle"></style>
+  <script>
+    (function () {
+      // 1. Theme Preloader
+      var savedTheme = localStorage.getItem('desa_theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else if (savedTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+      // 2. Auth Preloader
+      var token = sessionStorage.getItem('desa_ngawen_jwt_token');
+      if (token) {
+        var s = document.getElementById('authBootstrapStyle');
+        if (s) s.textContent = '#authOverlay { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }';
+      }
+    })();
+  </script>
+</head>
+
+<body>
+
+  <!-- =========================================================
+       LOGIN AUTH MODAL OVERLAY
+       ========================================================= -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-card" id="authCard">
+      <div class="auth-logo">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+      <h2 class="auth-title">CMS Admin Desa Ngawen</h2>
+      <p class="auth-sub">Masukkan kredensial akun untuk mengakses panel kontrol website</p>
+
+      <!-- Credentials Quick Access Buttons -->
+      <div
+        style="background: rgba(15, 56, 34, 0.08); border: 1px solid var(--admin-border); border-radius: 12px; padding: 12px; margin-bottom: 20px; font-size: 0.8rem; text-align: left; color: var(--admin-text);">
+        <div
+          style="font-weight: 700; color: var(--admin-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-bolt" style="color:var(--admin-accent);"></i> Akses Login Cepat:
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" id="quickLoginAdmin" class="btn-admin btn-admin-accent btn-admin-sm"
+            style="flex: 1; min-width: 130px; justify-content: center; font-size: 0.78rem;">
+            <i class="fa-solid fa-user-gear"></i> Superadmin
+          </button>
+          <button type="button" id="quickLoginOperator" class="btn-admin btn-admin-outline btn-admin-sm"
+            style="flex: 1; min-width: 130px; justify-content: center; font-size: 0.78rem;">
+            <i class="fa-solid fa-user-pen"></i> Operator
+          </button>
+        </div>
+      </div>
+
+      <form id="loginForm" onsubmit="return false;" novalidate>
+        <div class="form-group" style="text-align:left;">
+          <label for="loginUsername">Username</label>
+          <div class="input-icon-group">
+            <input type="text" id="loginUsername" class="form-control" placeholder="Masukkan username (contoh: admin)"
+              autocomplete="username" required>
+            <i class="fa-solid fa-user input-prefix-icon"></i>
+          </div>
+        </div>
+
+        <div class="form-group" style="text-align:left; margin-bottom:16px;">
+          <label for="loginPassword">Password</label>
+          <div class="input-icon-group">
+            <input type="password" id="loginPassword" class="form-control" placeholder="Masukkan password"
+              autocomplete="current-password" required>
+            <i class="fa-solid fa-lock input-prefix-icon"></i>
+            <button type="button" id="togglePasswordBtn" class="password-toggle-btn" aria-label="Tampilkan Password"
+              title="Tampilkan/Sembunyikan Password">
+              <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="loginErrorMsg"
+          style="min-height:1.4rem; margin-bottom:14px; font-size:0.84rem; color:#ef4444; font-weight:600; text-align:center;">
+        </div>
+
+        <button type="submit" id="submitLoginBtn" class="btn-admin btn-admin-accent btn-admin-block"
+          style="padding:12px; font-weight:700;">
+          <i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Panel CMS
+        </button>
+      </form>
+
+      <div
+        style="margin-top:20px; font-size:0.78rem; color:var(--admin-muted); display:flex; align-items:center; justify-content:center; gap:6px;">
+        <i class="fa-solid fa-shield-halved" style="color:var(--admin-accent);"></i> Authenticated JWT Session
+        Protection
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MAIN ADMIN LAYOUT
+       ========================================================= -->
+
+  <!-- Mobile Sidebar Backdrop -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="admin-layout">
+
+    <!-- ── Sidebar Navigation ── -->
+    <aside class="admin-sidebar" id="adminSidebar">
+
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon" id="sidebarBrandIcon">
+          <i class="fa-solid fa-mountain-sun"></i>
+        </div>
+        <div class="sidebar-brand-wrap">
+          <div class="sidebar-brand-title">CMS Desa Ngawen</div>
+          <div class="sidebar-brand-sub">Admin Management Panel</div>
+        </div>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup Sidebar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav" role="navigation" aria-label="Menu Navigasi CMS">
+        <button class="nav-item-btn active" data-tab="tab-dashboard">
+          <i class="fa-solid fa-chart-line"></i> Dashboard
+        </button>
+        <button class="nav-item-btn" data-tab="tab-laporan">
+          <i class="fa-solid fa-bullhorn"></i> Laporan &amp; Pengaduan
+          <span class="nav-badge" id="badgePendingLaporanCount">0</span>
+        </button>
+        <button class="nav-item-btn" data-tab="tab-layanan">
+          <i class="fa-solid fa-file-signature"></i> Layanan &amp; Surat Digital
+        </button>
+        <button class="nav-item-btn" data-tab="tab-branding">
+          <i class="fa-solid fa-palette"></i> Tampilan &amp; Branding
+        </button>
+        <button class="nav-item-btn" data-tab="tab-profil">
+          <i class="fa-solid fa-house-chimney"></i> Profil &amp; Visi Misi
+        </button>
+        <button class="nav-item-btn" data-tab="tab-pemerintahan">
+          <i class="fa-solid fa-building-columns"></i> Perangkat Desa
+        </button>
+        <button class="nav-item-btn" data-tab="tab-potensi">
+          <i class="fa-solid fa-seedling"></i> Potensi &amp; Wisata
+        </button>
+        <button class="nav-item-btn" data-tab="tab-kelompok">
+          <i class="fa-solid fa-users"></i> Kelembagaan &amp; Kelompok
+        </button>
+        <button class="nav-item-btn" data-tab="tab-wilayah">
+          <i class="fa-solid fa-map-location-dot"></i> Wilayah &amp; Dusun
+        </button>
+        <button class="nav-item-btn" data-tab="tab-berita">
+          <i class="fa-solid fa-newspaper"></i> Berita &amp; Pengumuman
+        </button>
+        <button class="nav-item-btn" data-tab="tab-keuangan">
+          <i class="fa-solid fa-file-invoice-dollar"></i> Transparansi APBDes
+        </button>
+        <button class="nav-item-btn" data-tab="tab-jdih">
+          <i class="fa-solid fa-scale-balanced"></i> Dokumen Perdes &amp; JDIH
+        </button>
+        <button class="nav-item-btn" data-tab="tab-demografi-detail">
+          <i class="fa-solid fa-chart-pie"></i> Demografi &amp; Statistik
+        </button>
+        <button class="nav-item-btn" data-tab="tab-lokasi">
+          <i class="fa-solid fa-location-dot"></i> Poin Penting Peta Desa
+        </button>
+        <button class="nav-item-btn" data-tab="tab-umkm">
+          <i class="fa-solid fa-store"></i> UMKM &amp; Peta Usaha
+        </button>
+        <button class="nav-item-btn" data-tab="tab-kontak">
+          <i class="fa-solid fa-address-book"></i> Kontak &amp; Medsos
+        </button>
+        <button class="nav-item-btn" data-tab="tab-user">
+          <i class="fa-solid fa-user-gear"></i> Pengaturan User
+        </button>
+        <button class="nav-item-btn" data-tab="tab-settings">
+          <i class="fa-solid fa-gears"></i> Pengaturan &amp; Backup
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <!-- Session Info Bar -->
+        <div class="session-info-bar" id="sessionInfoBar">
+          <span class="session-label">Status Sesi</span>
+          <span>— Belum Login —</span>
+        </div>
+        <a href="index.html" target="_blank" class="btn-sidebar-link">
+          <i class="fa-solid fa-globe"></i> Lihat Website Utama
+        </a>
+        <a href="berita.html" target="_blank" class="btn-sidebar-link">
+          <i class="fa-solid fa-newspaper"></i> Lihat Halaman Berita
+        </a>
+        <button id="logoutBtn" class="btn-sidebar-link">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar (Logout)
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── Main Content ── -->
+    <main class="admin-main" id="adminMain">
+
+      <!-- Topbar Header -->
+      <header class="admin-topbar" role="banner">
+        <div class="topbar-left">
+          <button id="mobileSidebarToggle" class="btn-admin btn-admin-outline btn-icon" aria-label="Buka Menu Sidebar"
+            aria-expanded="false" aria-controls="adminSidebar">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <span class="topbar-title" id="currentTabTitle">Dashboard Overview</span>
+        </div>
+
+        <div class="topbar-right" style="display:flex; align-items:center; gap:10px;">
+          <button type="button" id="adminThemeToggle" class="btn-admin btn-admin-outline btn-icon"
+            aria-label="Ganti Mode Gelap / Terang" title="Mode Gelap / Terang">
+            <i class="fa-solid fa-moon" id="adminThemeIcon"></i>
+          </button>
+          <button id="saveAllBtn" class="btn-admin btn-admin-accent" aria-label="Simpan semua perubahan">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span class="btn-text">Simpan Semua Perubahan</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Body Panes -->
+      <div class="admin-content-body">
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: DASHBOARD
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-dashboard" class="admin-tab-pane active" aria-label="Dashboard">
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-gauge-high"></i> Ringkasan Sistem CMS</h3>
+            <p class="text-muted" style="margin-bottom:20px; line-height:1.6;">
+              Selamat datang di CMS Portal Resmi Desa Ngawen. Anda dapat mengelola seluruh informasi website dari sini
+              secara real-time.
+            </p>
+
+            <!-- Stat Cards -->
+            <div class="stat-grid" style="margin-bottom:20px;">
+              <div class="stat-card" style="--stat-color: var(--admin-primary);">
+                <div class="stat-label">Total Penduduk</div>
+                <div class="stat-value text-primary" id="dashStatPenduduk">4.062</div>
+              </div>
+              <div class="stat-card" style="--stat-color:#3b82f6;">
+                <div class="stat-label">Laporan Warga</div>
+                <div class="stat-value" style="color:#3b82f6;" id="dashStatLaporan">3</div>
+              </div>
+              <div class="stat-card" style="--stat-color:#ef4444;">
+                <div class="stat-label">Laporan Menunggu</div>
+                <div class="stat-value" style="color:#ef4444;" id="dashStatPending">1</div>
+              </div>
+              <div class="stat-card" style="--stat-color: var(--admin-accent);">
+                <div class="stat-label">Sektor Potensi</div>
+                <div class="stat-value text-accent" id="dashStatPotensi">3</div>
+              </div>
+            </div>
+
+            <!-- Recent Activity Widget -->
+            <div class="activity-box">
+              <div class="activity-header">
+                <h4><i class="fa-solid fa-clock-rotate-left"></i> Aktivitas Laporan Warga Terbaru</h4>
+                <button class="btn-admin btn-admin-outline btn-admin-sm" id="btnDashGoLaporan">
+                  Lihat Semua <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+              <div id="dashRecentLaporanBox">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: LAPORAN & PENGADUAN
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-laporan" class="admin-tab-pane" aria-label="Laporan & Pengaduan">
+          <div class="admin-card">
+            <div class="section-header">
+              <div class="section-header-text">
+                <h3><i class="fa-solid fa-bullhorn"></i> Manajemen Laporan &amp; Pengaduan Warga</h3>
+                <p>Kelola aspirasi, tanggapi laporan, dan lacak status pengaduan warga secara real-time.</p>
+              </div>
+              <div class="section-header-actions">
+                <button id="btnExportLaporanCSV" class="btn-admin btn-admin-outline">
+                  <i class="fa-solid fa-file-csv"></i> <span class="btn-text">Ekspor CSV</span>
+                </button>
+                <button id="btnAddLaporanManual" class="btn-admin btn-admin-accent">
+                  <i class="fa-solid fa-plus"></i> <span class="btn-text">Tambah Laporan</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Stat Cards -->
+            <div class="stat-grid" style="margin-bottom:18px;">
+              <div class="stat-card">
+                <div class="stat-label">Total Laporan</div>
+                <div class="stat-value" id="statLapTotal">0</div>
+              </div>
+              <div class="stat-card" style="border-left:3px solid #f59e0b;">
+                <div class="stat-label" style="color:#d97706;">Menunggu Verifikasi</div>
+                <div class="stat-value" style="color:#d97706;" id="statLapPending">0</div>
+              </div>
+              <div class="stat-card" style="border-left:3px solid #3b82f6;">
+                <div class="stat-label" style="color:#2563eb;">Dalam Proses</div>
+                <div class="stat-value" style="color:#2563eb;" id="statLapProses">0</div>
+              </div>
+              <div class="stat-card" style="border-left:3px solid #10b981;">
+                <div class="stat-label" style="color:#059669;">Selesai Ditanggapi</div>
+                <div class="stat-value" style="color:#059669;" id="statLapSelesai">0</div>
+              </div>
+            </div>
+
+            <!-- Filter Toolbar -->
+            <div class="filter-toolbar">
+              <div class="filter-search">
+                <input type="text" id="searchLaporanInput" class="form-control"
+                  placeholder="&#xf002; Cari tiket, nama warga, isi laporan...">
+              </div>
+              <div class="filter-select">
+                <select id="filterLaporanStatus" class="form-control">
+                  <option value="Semua">Semua Status</option>
+                  <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+                  <option value="Diproses">Diproses</option>
+                  <option value="Selesai">Selesai</option>
+                  <option value="Ditolak">Ditolak</option>
+                </select>
+              </div>
+              <div class="filter-select">
+                <select id="filterLaporanDusun" class="form-control">
+                  <option value="Semua">Semua Dusun</option>
+                  <option value="Kolokendang">Kolokendang</option>
+                  <option value="Citromenggalan">Citromenggalan</option>
+                  <option value="Clapar">Clapar</option>
+                  <option value="Gejayan">Gejayan</option>
+                  <option value="Jetis">Jetis</option>
+                  <option value="Judah">Judah</option>
+                  <option value="Kemiriombo">Kemiriombo</option>
+                  <option value="Kesaran">Kesaran</option>
+                  <option value="Nganten">Nganten</option>
+                  <option value="Ngawen">Ngawen</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Tiket &amp; Tanggal</th>
+                    <th>Warga / Dusun</th>
+                    <th>Kategori &amp; Prioritas</th>
+                    <th>Isi Laporan</th>
+                    <th>Status</th>
+                    <th>Tanggapan Desa</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="laporanTableBody">
+                  <!-- Rendered via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: LAYANAN & SURAT DIGITAL
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-layanan" class="admin-tab-pane" aria-label="Layanan & Surat Digital">
+          <div class="admin-card">
+            <div class="section-header">
+              <div class="section-header-text">
+                <h3><i class="fa-solid fa-file-signature"></i> Manajemen Layanan &amp; Surat Digital</h3>
+                <p>Kelola jenis layanan surat administrasi warga dan persyaratan dokumen.</p>
+              </div>
+              <div class="section-header-actions">
+                <button id="btnAddLayananSurat" class="btn-admin btn-admin-accent">
+                  <i class="fa-solid fa-plus"></i> Tambah Layanan Surat
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Kode &amp; Nama Surat</th>
+                    <th>Kategori</th>
+                    <th>Estimasi Waktu</th>
+                    <th>Persyaratan Dokumen</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="layananSuratTableBody">
+                  <!-- Rendered via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Permohonan Surat Online Masuk dari Warga -->
+          <div class="admin-card">
+            <div class="section-header">
+              <div class="section-header-text">
+                <h3><i class="fa-solid fa-inbox"></i> Permohonan Surat Online Masuk (Antrean Warga)</h3>
+                <p>Proses permohonan surat warga, beri nomor surat resmi, dan cetak/preview draft surat digital.</p>
+              </div>
+            </div>
+
+            <!-- Stat Grid -->
+            <div class="stat-grid" style="margin-bottom:18px;">
+              <div class="stat-card">
+                <div class="stat-label">Total Permohonan</div>
+                <div class="stat-value" id="statSuratTotal">0</div>
+              </div>
+              <div class="stat-card" style="border-left:3px solid #f59e0b;">
+                <div class="stat-label" style="color:#d97706;">Menunggu</div>
+                <div class="stat-value" style="color:#d97706;" id="statSuratPending">0</div>
+              </div>
+              <div class="stat-card" style="border-left:3px solid #3b82f6;">
+                <div class="stat-label" style="color:#2563eb;">Diproses</div>
+                <div class="stat-value" style="color:#2563eb;" id="statSuratProses">0</div>
+              </div>
+              <div class="stat-card" style="border-left:3px solid #10b981;">
+                <div class="stat-label" style="color:#059669;">Siap / Selesai</div>
+                <div class="stat-value" style="color:#059669;" id="statSuratSelesai">0</div>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Kode Tiket &amp; Tanggal</th>
+                    <th>Nama Pemohon &amp; NIK</th>
+                    <th>Jenis Surat</th>
+                    <th>Keperluan</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="suratRequestTableBody">
+                  <!-- Rendered via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: TAMPILAN & BRANDING
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-branding" class="admin-tab-pane" aria-label="Tampilan & Branding">
+
+          <!-- UI Theme & Color Customizer -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-palette"></i> kustomisasi UI &amp; Skema Warna (Color
+              &amp; Layout Customizer)</h3>
+            <p class="text-muted" style="margin-bottom:16px; line-height:1.5;">
+              Atur skema warna utama, tata letak (*layout*), dan gaya komponen visual website utama Desa Ngawen.
+            </p>
+            <div class="form-grid-4">
+              <div class="form-group">
+                <label>Warna Utama (Primary Color)</label>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input type="color" id="primaryColorPicker" class="form-control" value="#0f3822"
+                    style="width:48px; height:38px; padding:2px; cursor:pointer;">
+                  <input type="text" id="primaryColorInput" class="form-control" value="#0f3822" style="flex:1;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Warna Aksen (Accent Color)</label>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input type="color" id="accentColorPicker" class="form-control" value="#fbbf24"
+                    style="width:48px; height:38px; padding:2px; cursor:pointer;">
+                  <input type="text" id="accentColorInput" class="form-control" value="#fbbf24" style="flex:1;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Gaya Sudut Kartu (Card Border Radius)</label>
+                <select id="cardStyleSelect" class="form-control">
+                  <option value="rounded-xl">Sangat Bulat (Rounded XL - Default)</option>
+                  <option value="rounded-md">Sedang (Rounded MD)</option>
+                  <option value="sharp">Tegas / Persegi (Sharp Corners)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Jarak Antar Seksi (Layout Spacing)</label>
+                <select id="layoutSpacingSelect" class="form-control">
+                  <option value="compact">Ringkas (Compact Spacing)</option>
+                  <option value="default" selected>Standar (Default Spacing)</option>
+                  <option value="relaxed">Renggang (Relaxed Spacing)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pengaturan & Edit Teks Branding (Posisi, Warna & Font) -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-font-case"></i> Pengaturan &amp; Edit Teks Branding
+              (Posisi, Warna &amp; Font)</h3>
+            <p class="text-muted" style="margin-bottom:16px; line-height:1.5;">
+              Kustomisasi posisi alignment, pilihan font, dan warna teks untuk judul, aksen, serta paragraf website Desa
+              Ngawen.
+            </p>
+
+            <div class="form-grid-2" style="margin-bottom:16px;">
+              <!-- Pilihan Font -->
+              <div class="form-group">
+                <label><i class="fa-solid fa-heading"></i> Font Judul Utama (Heading Font)</label>
+                <select id="headingFontSelect" class="form-control">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label><i class="fa-solid fa-paragraph"></i> Font Teks Isi / Paragraf (Body Font)</label>
+                <select id="bodyFontSelect" class="form-control">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Warna Teks -->
+            <div class="form-grid-3" style="margin-bottom:16px;">
+              <div class="form-group">
+                <label>Warna Teks Judul (Heading Color)</label>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input type="color" id="headingColorPicker" class="form-control" value="#0f3822"
+                    style="width:48px; height:38px; padding:2px; cursor:pointer;">
+                  <input type="text" id="headingColorInput" class="form-control" value="#0f3822" style="flex:1;">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Warna Teks Isi (Body Text Color)</label>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input type="color" id="textColorPicker" class="form-control" value="#1e293b"
+                    style="width:48px; height:38px; padding:2px; cursor:pointer;">
+                  <input type="text" id="textColorInput" class="form-control" value="#1e293b" style="flex:1;">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Warna Teks Aksen (Accent Text Color)</label>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input type="color" id="accentTextColorPicker" class="form-control" value="#d97706"
+                    style="width:48px; height:38px; padding:2px; cursor:pointer;">
+                  <input type="text" id="accentTextColorInput" class="form-control" value="#d97706" style="flex:1;">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Warna Sub-judul &amp; Keterangan (Subtitle Color)</label>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input type="color" id="subtitleTextColorPicker" class="form-control" value="#64748b"
+                    style="width:48px; height:38px; padding:2px; cursor:pointer;">
+                  <input type="text" id="subtitleTextColorInput" class="form-control" value="#64748b" style="flex:1;">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Warna Teks Kartu &amp; Banner Hijau (Dark Surface Text)</label>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input type="color" id="darkCardTextColorPicker" class="form-control" value="#ffffff"
+                    style="width:48px; height:38px; padding:2px; cursor:pointer;">
+                  <input type="text" id="darkCardTextColorInput" class="form-control" value="#ffffff" style="flex:1;">
+                </div>
+              </div>
+            </div>
+
+            <!-- Posisi & Alignment Teks -->
+            <div class="form-grid-2" style="margin-bottom:20px;">
+              <div class="form-group">
+                <label><i class="fa-solid fa-align-center"></i> Posisi Alignment Teks Hero / Header</label>
+                <select id="heroTextAlignSelect" class="form-control">
+                  <option value="left" selected>Rata Kiri (Left Alignment)</option>
+                  <option value="center">Rata Tengah (Center Alignment)</option>
+                  <option value="right">Rata Kanan (Right Alignment)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label><i class="fa-solid fa-align-justify"></i> Posisi Alignment Teks Konten Utama</label>
+                <select id="bodyTextAlignSelect" class="form-control">
+                  <option value="left" selected>Rata Kiri (Left Alignment)</option>
+                  <option value="center">Rata Tengah (Center Alignment)</option>
+                  <option value="right">Rata Kanan (Right Alignment)</option>
+                  <option value="justify">Rata Kiri-Kanan (Justify Alignment)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Live Text Customizer Preview Box -->
+            <div class="text-preview-card" id="brandingTextPreview"
+              style="padding:20px; border-radius:14px; border:1px dashed var(--admin-border, #cbd5e1); background:var(--admin-card-bg, #ffffff); transition: all 0.2s ease;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <span class="preview-badge" id="previewAccentBadge"
+                  style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em; padding:4px 12px; border-radius:20px; font-weight:700; background:rgba(217, 119, 6, 0.12); color:#d97706;">
+                  <i class="fa-solid fa-sparkles"></i> Pratinjau Teks Live
+                </span>
+                <small class="text-muted" style="font-size:0.8rem;"><i class="fa-solid fa-eye"></i> Tampilan
+                  Real-time</small>
+              </div>
+              <h3 id="previewHeadingText"
+                style="margin:0 0 10px 0; font-size:1.4rem; font-weight:700; color:#0f3822; line-height:1.3;">
+                Selamat Datang di Portal Resmi Desa Ngawen
+              </h3>
+              <p id="previewBodyText" style="margin:0; font-size:0.95rem; line-height:1.6; color:#1e293b;">
+                Sistem Informasi Desa Ngawen menyediakan akses transparan untuk dokumen kependudukan, peta potensi desa,
+                berita kegiatan, serta pelayanan publik mandiri bagi seluruh warga Muntilan, Magelang.
+              </p>
+            </div>
+          </div>
+
+          <!-- Font & Tipografi Picker -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-font"></i> Pengaturan Tipografi &amp; Font Utama Website
+            </h3>
+            <p class="text-muted" style="margin-bottom:14px; line-height:1.5;">
+              Pilih jenis tipografi/font Google Fonts yang akan digunakan untuk seluruh halaman website Desa Ngawen.
+            </p>
+            <div class="font-picker-grid" id="fontPickerGrid">
+              <!-- Dynamically populated from GOOGLE_FONTS array -->
+            </div>
+          </div>
+
+          <!-- Logo Picker -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-icons"></i> Logo Header &amp; Brand Identity</h3>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Tipe Logo Header</label>
+                <select id="logoTypeSelect" class="form-control">
+                  <option value="icon">Ikon FontAwesome</option>
+                  <option value="image">Gambar / Upload Logo</option>
+                </select>
+              </div>
+              <div class="form-group" id="logoIconGroup">
+                <label>Kelas Ikon FontAwesome (misal: fa-solid fa-mountain-sun)</label>
+                <input type="text" id="logoIconInput" class="form-control" value="fa-solid fa-mountain-sun">
+              </div>
+            </div>
+
+            <div class="form-group" id="logoImageGroup" style="display:none;">
+              <label>Unggah Gambar Logo Desa</label>
+              <div class="image-upload-wrapper">
+                <img id="logoImagePreview" src="assets/candi.png" class="img-preview-box" alt="Logo Preview">
+                <div class="upload-inputs">
+                  <input type="file" id="logoFileInput" accept="image/*" class="form-control">
+                  <input type="text" id="logoImageUrlInput" class="form-control" placeholder="atau tempel URL gambar">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Site Images -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-images"></i> Pengaturan Gambar Utama Website</h3>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Gambar Balai Desa / Kepala Desa</label>
+                <div class="image-upload-wrapper">
+                  <img id="imgPreviewBalaiDesa" src="assets/balai_desa.png" class="img-preview-box" alt="Balai Desa">
+                  <div class="upload-inputs">
+                    <input type="file" id="fileInputBalaiDesa" accept="image/*" class="form-control">
+                    <input type="text" id="urlInputBalaiDesa" class="form-control" value="assets/balai_desa.png">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Gambar Candi Ngawen (Wisata Utama)</label>
+                <div class="image-upload-wrapper">
+                  <img id="imgPreviewCandi" src="assets/candi.png" class="img-preview-box" alt="Candi Ngawen">
+                  <div class="upload-inputs">
+                    <input type="file" id="fileInputCandi" accept="image/*" class="form-control">
+                    <input type="text" id="urlInputCandi" class="form-control" value="assets/candi.png">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Gambar Demografi &amp; Kemasyarakatan</label>
+                <div class="image-upload-wrapper">
+                  <img id="imgPreviewDemografi" src="assets/demografi.png" class="img-preview-box" alt="Demografi">
+                  <div class="upload-inputs">
+                    <input type="file" id="fileInputDemografi" accept="image/*" class="form-control">
+                    <input type="text" id="urlInputDemografi" class="form-control" value="assets/demografi.png">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Gambar PKK &amp; Posyandu</label>
+                <div class="image-upload-wrapper">
+                  <img id="imgPreviewPkk" src="assets/pkk.png" class="img-preview-box" alt="PKK">
+                  <div class="upload-inputs">
+                    <input type="file" id="fileInputPkk" accept="image/*" class="form-control">
+                    <input type="text" id="urlInputPkk" class="form-control" value="assets/pkk.png">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Gambar Profil Lanskap Desa</label>
+                <div class="image-upload-wrapper">
+                  <img id="imgPreviewProfil" src="assets/profil.png" class="img-preview-box" alt="Profil Desa">
+                  <div class="upload-inputs">
+                    <input type="file" id="fileInputProfil" accept="image/*" class="form-control">
+                    <input type="text" id="urlInputProfil" class="form-control" value="assets/profil.png">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: PROFIL DESA & VISI MISI
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-profil" class="admin-tab-pane" aria-label="Profil Desa">
+          <form id="formProfil">
+            <div class="admin-card">
+              <h3 class="card-title-header"><i class="fa-solid fa-house-chimney"></i> Informasi Banner &amp; Hero</h3>
+              <div class="form-group">
+                <label>Slogan Banner Pill</label>
+                <input type="text" id="profHeroPill" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Judul Hero (Gunakan &lt;br&gt; atau &lt;span&gt; jika perlu)</label>
+                <input type="text" id="profHeroTitle" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Deskripsi Singkat Desa</label>
+                <textarea id="profHeroDesc" class="form-control"></textarea>
+              </div>
+            </div>
+
+            <div class="admin-card">
+              <h3 class="card-title-header"><i class="fa-solid fa-bullseye"></i> Visi &amp; Misi Desa Ngawen</h3>
+              <div class="form-group">
+                <label>Visi Desa</label>
+                <textarea id="profVisi" class="form-control"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Misi Desa (Pisahkan tiap poin misi dengan baris baru)</label>
+                <textarea id="profMisi" class="form-control" style="min-height:150px;"></textarea>
+              </div>
+            </div>
+
+            <div class="admin-card">
+              <h3 class="card-title-header"><i class="fa-solid fa-chart-pie"></i> Statistik Utama Kependudukan</h3>
+              <div class="form-grid-4">
+                <div class="form-group">
+                  <label>Total Penduduk (Jiwa)</label>
+                  <input type="number" id="profStatPenduduk" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Kepala Keluarga (KK)</label>
+                  <input type="number" id="profStatKK" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Luas Wilayah (Hektar)</label>
+                  <input type="number" step="0.01" id="profStatLuas" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Jumlah Dusun</label>
+                  <input type="number" id="profStatDusun" class="form-control">
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: PEMERINTAHAN & PERANGKAT DESA
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-pemerintahan" class="admin-tab-pane" aria-label="Perangkat Desa">
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-user-tie"></i> Kepala Desa</h3>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Nama Kepala Desa</label>
+                <input type="text" id="kadesNama" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Keterangan / Jabatan</label>
+                <input type="text" id="kadesDesc" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="card-title-header">
+              <span><i class="fa-solid fa-users"></i> Daftar Perangkat Desa (Sekdes, Kaur, Kasi)</span>
+              <button class="btn-admin btn-admin-accent btn-admin-sm" id="btnAddPerangkat">
+                <i class="fa-solid fa-plus"></i> Tambah Perangkat
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Jabatan</th>
+                    <th>Deskripsi</th>
+                    <th style="width:130px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="perangkatTableBody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-street-view"></i> Daftar Kepala Dusun (Kadus)</h3>
+            <div id="kadusFormGrid" class="form-grid-2">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: POTENSI DESA
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-potensi" class="admin-tab-pane" aria-label="Potensi Desa">
+          <div class="admin-card">
+            <div class="card-title-header">
+              <span><i class="fa-solid fa-seedling"></i> Kartu Potensi Wisata &amp; Agrowisata</span>
+              <button class="btn-admin btn-admin-accent btn-admin-sm" id="btnAddPotensi">
+                <i class="fa-solid fa-plus"></i> Tambah Potensi
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Gambar</th>
+                    <th>Judul</th>
+                    <th>Kategori</th>
+                    <th>Deskripsi</th>
+                    <th style="width:130px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="potensiTableBody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-chart-pie"></i> Pengaturan Grafik Sebaran Potensi Desa
+            </h3>
+            <p class="text-muted" style="margin-bottom:18px;">Atur persentase sebaran sektor potensi pada grafik donut
+              ekonomi Desa Ngawen.</p>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label>Pariwisata &amp; Cagar Budaya (%)</label>
+                <input type="number" step="0.1" id="chartPotensiPariwisata" class="form-control" placeholder="40">
+              </div>
+              <div class="form-group">
+                <label>Pertanian &amp; Agrowisata (%)</label>
+                <input type="number" step="0.1" id="chartPotensiPertanian" class="form-control" placeholder="40">
+              </div>
+              <div class="form-group">
+                <label>Kerajinan &amp; Kuliner (%)</label>
+                <input type="number" step="0.1" id="chartPotensiKerajinan" class="form-control" placeholder="20">
+              </div>
+            </div>
+            <button type="button" id="btnSaveChartPotensi" class="btn-admin btn-admin-accent">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan Data Grafik Potensi
+            </button>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: KELEMBAGAAN & KELOMPOK
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-kelompok" class="admin-tab-pane" aria-label="Kelembagaan">
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-female"></i> PKK (Pemberdayaan Kesejahteraan Keluarga)
+            </h3>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Jumlah Pokja Aktif</label>
+                <input type="number" id="pkkPokja" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Jumlah Anggota Terdaftar</label>
+                <input type="number" id="pkkAnggota" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Deskripsi PKK</label>
+              <textarea id="pkkDesc" class="form-control"></textarea>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="card-title-header">
+              <span><i class="fa-solid fa-people-group"></i> Kelompok Masyarakat &amp; Organisasi Warga</span>
+              <button class="btn-admin btn-admin-accent btn-admin-sm" id="btnAddKelompok">
+                <i class="fa-solid fa-plus"></i> Tambah Kelompok
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Nama Organisasi</th>
+                    <th>Deskripsi</th>
+                    <th style="width:130px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="kelompokTableBody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: WILAYAH & DUSUN
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-wilayah" class="admin-tab-pane" aria-label="Wilayah & Dusun">
+          <!-- Batas Administratif -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-compass"></i> Batas Administratif Wilayah</h3>
+            <div class="form-grid-4">
+              <div class="form-group">
+                <label>Batas Utara</label>
+                <input type="text" id="batasUtara" class="form-control" placeholder="Contoh: Desa Pucungrejo">
+              </div>
+              <div class="form-group">
+                <label>Batas Selatan</label>
+                <input type="text" id="batasSelatan" class="form-control" placeholder="Contoh: Desa Keji">
+              </div>
+              <div class="form-group">
+                <label>Batas Barat</label>
+                <input type="text" id="batasBarat" class="form-control" placeholder="Contoh: Desa Ngrajek">
+              </div>
+              <div class="form-group">
+                <label>Batas Timur</label>
+                <input type="text" id="batasTimur" class="form-control" placeholder="Contoh: Desa Congkrang">
+              </div>
+            </div>
+          </div>
+
+          <!-- Profil Geografis & Lahan -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-map"></i> Profil Geografis &amp; Infrastruktur Lahan
+            </h3>
+            <div class="form-grid-4">
+              <div class="form-group">
+                <label>Luas Wilayah Total (Ha)</label>
+                <input type="number" step="0.01" id="wilayahLuasTotal" class="form-control" value="202.8">
+              </div>
+              <div class="form-group">
+                <label>Ketinggian Wilayah</label>
+                <input type="text" id="wilayahKetinggian" class="form-control" value="± 320 m dpl">
+              </div>
+              <div class="form-group">
+                <label>Kepadatan Penduduk</label>
+                <input type="text" id="wilayahKepadatan" class="form-control" value="± 138.9 jiwa/Ha">
+              </div>
+              <div class="form-group">
+                <label>Sistem Irigasi Utama</label>
+                <input type="text" id="wilayahIrigasi" class="form-control" value="Irigasi Teknis">
+              </div>
+            </div>
+          </div>
+
+          <!-- Editor Grafik Tata Guna Lahan -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-chart-pie"></i> Pengaturan Grafik Tata Guna Lahan</h3>
+            <p class="text-muted" style="margin-bottom:18px;">Atur persentase peruntukan lahan pada grafik donut
+              geografis Desa Ngawen.</p>
+            <div class="form-grid-4">
+              <div class="form-group">
+                <label>Sawah &amp; Pertanian (%)</label>
+                <input type="number" step="0.1" id="chartLahanSawah" class="form-control" placeholder="68.2">
+              </div>
+              <div class="form-group">
+                <label>Pemukiman Warga (%)</label>
+                <input type="number" step="0.1" id="chartLahanPemukiman" class="form-control" placeholder="22.4">
+              </div>
+              <div class="form-group">
+                <label>Fasilitas Umum &amp; Jalan (%)</label>
+                <input type="number" step="0.1" id="chartLahanFasum" class="form-control" placeholder="6.1">
+              </div>
+              <div class="form-group">
+                <label>Perkebunan &amp; Lainnya (%)</label>
+                <input type="number" step="0.1" id="chartLahanPerkebunan" class="form-control" placeholder="3.3">
+              </div>
+            </div>
+            <button type="button" id="btnSaveChartLahan" class="btn-admin btn-admin-accent">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan Data Grafik Tata Guna Lahan
+            </button>
+          </div>
+
+          <!-- Editor Tabel 10 Dusun / Kadus -->
+          <div class="admin-card">
+            <div class="card-title-header">
+              <span><i class="fa-solid fa-sitemap"></i> Data 10 Dusun &amp; Kepala Dusun (Kadus) SID 2026</span>
+            </div>
+            <p class="text-muted" style="margin-bottom:12px; font-size:0.85rem;">
+              Perbarui rincian jumlah RW, RT, KK, dan Kepala Dusun (Kadus) untuk masing-masing dusun di Desa Ngawen.
+            </p>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Dusun</th>
+                    <th>Nama Kepala Dusun (Kadus)</th>
+                    <th>RW</th>
+                    <th>RT</th>
+                    <th>KK</th>
+                    <th>Laki-Laki</th>
+                    <th>Perempuan</th>
+                    <th>Total Jiwa</th>
+                  </tr>
+                </thead>
+                <tbody id="dusunsAdminTableBody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: BERITA & PENGUMUMAN
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-berita" class="admin-tab-pane" aria-label="Berita & Pengumuman">
+          <div class="admin-card">
+            <div class="card-title-header">
+              <span><i class="fa-solid fa-newspaper"></i> Manajemen Berita &amp; Pengumuman Desa</span>
+              <button class="btn-admin btn-admin-accent btn-admin-sm" id="btnAddBerita">
+                <i class="fa-solid fa-plus"></i> Tulis Berita Baru
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Gambar</th>
+                    <th>Judul Berita</th>
+                    <th>Kategori</th>
+                    <th>Tanggal</th>
+                    <th>Status</th>
+                    <th style="width:130px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="beritaTableBody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: PENGATURAN USER
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-user" class="admin-tab-pane" aria-label="Pengaturan User">
+
+          <!-- Profil Akun Admin -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-id-card"></i> Profil Akun Saya</h3>
+            <div style="display:flex; gap:24px; align-items:flex-start; flex-wrap:wrap;">
+
+              <!-- Avatar Upload -->
+              <div style="display:flex; flex-direction:column; align-items:center; gap:10px; min-width:110px;">
+                <div class="avatar-ring" id="avatarPreviewWrap">
+                  <img id="avatarPreviewImg" src="" alt="Avatar"
+                    style="width:100%; height:100%; object-fit:cover; display:none;">
+                  <i id="avatarIconPlaceholder" class="fa-solid fa-user" style="font-size:2.4rem; color:#fff;"></i>
+                </div>
+                <label class="btn-admin btn-admin-outline btn-admin-sm" style="cursor:pointer;">
+                  <i class="fa-solid fa-camera"></i> Ubah Foto
+                  <input type="file" id="avatarFileInput" accept="image/*" style="display:none;">
+                </label>
+                <button type="button" id="btnRemoveAvatar" class="btn-admin btn-admin-danger btn-admin-sm"
+                  style="display:none;">
+                  <i class="fa-solid fa-trash"></i> Hapus
+                </button>
+              </div>
+
+              <!-- Profil Form -->
+              <div style="flex:1; min-width:220px;">
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label>Nama Lengkap Admin</label>
+                    <input type="text" id="profNamaAdmin" class="form-control" placeholder="Nama lengkap Anda...">
+                  </div>
+                  <div class="form-group">
+                    <label>Jabatan / Posisi</label>
+                    <input type="text" id="profJabatanAdmin" class="form-control"
+                      placeholder="misal: Operator CMS, Sekretaris...">
+                  </div>
+                  <div class="form-group">
+                    <label>Email Aktif</label>
+                    <input type="email" id="profEmailAdmin" class="form-control" placeholder="email@desangawen.id">
+                  </div>
+                  <div class="form-group">
+                    <label>No. HP / WhatsApp</label>
+                    <input type="tel" id="profNohpAdmin" class="form-control" placeholder="0812-xxxx-xxxx">
+                  </div>
+                </div>
+                <button type="button" id="btnSaveProfile" class="btn-admin btn-admin-accent">
+                  <i class="fa-solid fa-floppy-disk"></i> Simpan Profil
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Keamanan Akun -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-shield-halved"></i> Keamanan Akun &amp; Ubah Password
+            </h3>
+            <form id="formChangePassword" style="max-width:520px;">
+              <div class="form-group">
+                <label>Username Aktif Saat Ini</label>
+                <input type="text" id="setNewUsername" class="form-control" placeholder="Username baru...">
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label>Password Baru</label>
+                  <div style="position:relative;">
+                    <input type="password" id="setNewPassword" class="form-control" placeholder="Minimal 6 karakter"
+                      style="padding-right:42px;">
+                    <button type="button" id="btnTogglePwd" tabindex="-1"
+                      style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--admin-muted);">
+                      <i class="fa-regular fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Konfirmasi Password Baru</label>
+                  <input type="password" id="setConfirmPassword" class="form-control"
+                    placeholder="Ulangi password baru">
+                </div>
+              </div>
+              <!-- Strength Bar -->
+              <div style="margin-bottom:16px;">
+                <div style="font-size:0.78rem; color:var(--admin-muted); margin-bottom:5px;">
+                  Kekuatan Password: <span id="pwdStrengthLabel" style="font-weight:700;">—</span>
+                </div>
+                <div style="height:6px; background:var(--admin-border); border-radius:4px; overflow:hidden;">
+                  <div id="pwdStrengthBar"
+                    style="height:100%; width:0%; border-radius:4px; transition:width .3s, background .3s;"></div>
+                </div>
+              </div>
+              <button type="submit" class="btn-admin btn-admin-primary">
+                <i class="fa-solid fa-lock"></i> Perbarui Keamanan Akun
+              </button>
+            </form>
+          </div>
+
+          <!-- Manajemen Pengguna CMS -->
+          <div class="admin-card">
+            <div class="section-header">
+              <div class="section-header-text">
+                <h3><i class="fa-solid fa-users-gear"></i> Manajemen Pengguna CMS</h3>
+                <p>Tambah, ubah, atau nonaktifkan akun operator yang dapat mengakses CMS Admin.</p>
+              </div>
+              <div class="section-header-actions">
+                <button id="btnAddUser" class="btn-admin btn-admin-accent">
+                  <i class="fa-solid fa-user-plus"></i> Tambah Pengguna
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Pengguna</th>
+                    <th>Username</th>
+                    <th>Role / Hak Akses</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Terdaftar</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                  <!-- Rendered by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Informasi Sesi & Riwayat Login -->
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-clock-rotate-left"></i> Informasi Sesi &amp; Riwayat
+              Login</h3>
+            <div class="form-grid-2" style="margin-bottom:18px;">
+              <div class="stat-card" style="--stat-color: var(--admin-primary);">
+                <div class="stat-label">Sesi Aktif</div>
+                <div style="font-size:1rem; font-weight:700; color:var(--admin-primary); margin-top:4px;"
+                  id="sessionUsername">admin</div>
+                <div style="font-size:0.78rem; color:var(--admin-muted); margin-top:2px;" id="sessionLoginTime">—</div>
+              </div>
+              <div class="stat-card" style="--stat-color:#3b82f6;">
+                <div class="stat-label">Total Percobaan Login</div>
+                <div style="font-size:1rem; font-weight:700; color:#3b82f6; margin-top:4px;" id="sessionLoginCount">0
+                  kali</div>
+                <div style="font-size:0.78rem; color:var(--admin-muted); margin-top:2px;">Login berhasil &amp; gagal (30
+                  terakhir)</div>
+              </div>
+            </div>
+            <div id="loginHistoryList"
+              style="max-height:260px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+              <!-- Rendered by admin.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: KEUANGAN & SISKEUDES (APBDES)
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-keuangan" class="admin-tab-pane" aria-label="Transparansi APBDes">
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-file-invoice-dollar"></i> Kelola Transparansi Keuangan
+              &amp; APBDes Siskeudes</h3>
+            <p class="text-muted" style="margin-bottom:18px;">Atur data anggaran APBDes Desa Ngawen, sumber pendapatan,
+              dan alokasi belanja desa.</p>
+
+            <form id="formKeuangan" onsubmit="return false;">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label>Tahun Anggaran APBDes</label>
+                  <input type="text" id="keuanganTahun" class="form-control" placeholder="Contoh: 2026">
+                </div>
+                <div class="form-group">
+                  <label>Total Pendapatan Desa</label>
+                  <input type="text" id="keuanganPendapatan" class="form-control"
+                    placeholder="Contoh: Rp 1.850.420.000">
+                </div>
+                <div class="form-group">
+                  <label>Total Belanja Desa</label>
+                  <input type="text" id="keuanganBelanja" class="form-control" placeholder="Contoh: Rp 1.820.150.000">
+                </div>
+                <div class="form-group">
+                  <label>Pembiayaan Netto Desa</label>
+                  <input type="text" id="keuanganPembiayaan" class="form-control" placeholder="Contoh: Rp 30.270.000">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Catatan / Keterangan APBDes</label>
+                <textarea id="keuanganCatatan" class="form-control" rows="2"
+                  placeholder="Keterangan transparansi Siskeudes..."></textarea>
+              </div>
+              <button type="button" id="btnSaveKeuangan" class="btn-admin btn-admin-accent">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan Data APBDes
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: DOKUMEN PERDES & JDIH DESA
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-jdih" class="admin-tab-pane" aria-label="Dokumen Perdes & JDIH">
+          <div class="admin-card">
+            <div class="section-header">
+              <div class="section-header-text">
+                <h3><i class="fa-solid fa-scale-balanced"></i> Katalog Peraturan Desa &amp; Dokumen JDIH</h3>
+                <p>Kelola Peraturan Desa (Perdes), Peraturan Kepala Desa (Perkel), dan Keputusan Kades.</p>
+              </div>
+              <div class="section-header-actions">
+                <button type="button" id="btnAddJdih" class="btn-admin btn-admin-accent">
+                  <i class="fa-solid fa-plus"></i> Tambah Dokumen Perdes
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Nomor &amp; Tahun</th>
+                    <th>Judul Dokumen Peraturan</th>
+                    <th>Kategori</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="jdihTableBody">
+                  <!-- Rendered via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: DEMOGRAFI & STATISTIK
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-demografi-detail" class="admin-tab-pane" aria-label="Demografi & Statistik">
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-chart-pie"></i> Statistik Demografi Kependudukan</h3>
+            <p class="text-muted" style="margin-bottom:18px;">Atur data statistik Agama, Tingkat Pendidikan, dan Sektor
+              Pekerjaan Warga Desa Ngawen.</p>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Total Jiwa Penduduk</label>
+                <input type="number" id="demoTotalPenduduk" class="form-control" placeholder="4153">
+              </div>
+              <div class="form-group">
+                <label>Jumlah Kepala Keluarga (KK)</label>
+                <input type="number" id="demoTotalKK" class="form-control" placeholder="1370">
+              </div>
+              <div class="form-group">
+                <label>Jumlah Penduduk Laki-Laki</label>
+                <input type="number" id="demoLaki" class="form-control" placeholder="2033">
+              </div>
+              <div class="form-group">
+                <label>Jumlah Penduduk Perempuan</label>
+                <input type="number" id="demoPerempuan" class="form-control" placeholder="2117">
+              </div>
+            </div>
+            <button type="button" id="btnSaveDemografiStats" class="btn-admin btn-admin-accent">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan Ringkasan Demografi
+            </button>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: POIN PENTING PETA DESA (LOKASI)
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-lokasi" class="admin-tab-pane" aria-label="Poin Penting Peta Desa">
+          <div class="admin-card">
+            <div class="section-header">
+              <div class="section-header-text">
+                <h3><i class="fa-solid fa-location-dot"></i> Kelola Poin Penting &amp; Fasilitas Peta Desa</h3>
+                <p>Tambah, ubah, atau hapus titik lokasi fasilitas publik, situs cagar budaya, dan sentra UMKM pada peta
+                  interaktif.</p>
+              </div>
+              <div class="section-header-actions">
+                <button type="button" id="btnAddLokasi" class="btn-admin btn-admin-accent">
+                  <i class="fa-solid fa-plus"></i> Tambah Titik Lokasi
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Nama Lokasi</th>
+                    <th>Kategori</th>
+                    <th>Koordinat (Lat, Lng)</th>
+                    <th>Deskripsi Ringkas</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="lokasiTableBody">
+                  <!-- Rendered via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: KONTAK RESMI & MEDIA SOSIAL
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-kontak" class="admin-tab-pane" aria-label="Kontak & Medsos">
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-address-book"></i> Kontak Resmi &amp; Kanal Media Sosial
+              Desa</h3>
+            <p class="text-muted" style="margin-bottom:18px;">Atur informasi nomor telepon, WhatsApp, email, dan akun
+              media sosial resmi Pemerintah Desa Ngawen.</p>
+
+            <form id="formKontakResmi" onsubmit="return false;">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label>Nomor Telepon Kantor Desa</label>
+                  <input type="text" id="kontakTelepon" class="form-control" placeholder="(0293)...">
+                </div>
+                <div class="form-group">
+                  <label>Nomor WhatsApp Resmi Pelayanan</label>
+                  <input type="text" id="kontakWhatsapp" class="form-control" placeholder="087756655004">
+                </div>
+                <div class="form-group">
+                  <label>Email Resmi Pemerintah Desa</label>
+                  <input type="email" id="kontakEmail" class="form-control" placeholder="Pemdesangawen@gmail.com">
+                </div>
+                <div class="form-group">
+                  <label>Instagram Resmi Desa</label>
+                  <input type="text" id="kontakInstagram" class="form-control" placeholder="@pemdes_ngawen">
+                </div>
+                <div class="form-group">
+                  <label>Channel YouTube Resmi</label>
+                  <input type="text" id="kontakYoutube" class="form-control" placeholder="Channel Resmi Desa Ngawen">
+                </div>
+                <div class="form-group">
+                  <label>URL Portal Profil Desa (Versi Baru)</label>
+                  <input type="url" id="kontakPortalBaru" class="form-control"
+                    placeholder="https://ngawen-2-0.netlify.app/">
+                </div>
+              </div>
+              <button type="button" id="btnSaveKontakResmi" class="btn-admin btn-admin-accent">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan Kontak &amp; Media Sosial
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: UMKM & PETA USAHA
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-umkm" class="admin-tab-pane" aria-label="UMKM & Peta Usaha">
+          <div class="admin-card">
+            <div class="section-header">
+              <div class="section-header-text">
+                <h3><i class="fa-solid fa-store"></i> Manajemen Direktori &amp; Peta UMKM Desa</h3>
+                <p>Kelola daftar usaha mikro, kecil, dan menengah Desa Ngawen beserta titik koordinat peta &amp; link
+                  Google Maps.</p>
+              </div>
+              <div class="section-header-actions">
+                <button id="btnAddUmkm" class="btn-admin btn-admin-accent">
+                  <i class="fa-solid fa-plus"></i> <span class="btn-text">Tambah UMKM Baru</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Stat Grid -->
+            <div class="stat-grid" style="margin-bottom:18px;">
+              <div class="stat-card">
+                <div class="stat-label">Total UMKM Terdaftar</div>
+                <div class="stat-value text-primary" id="statUmkmTotal">14</div>
+              </div>
+              <div class="stat-card" style="border-left:3px solid #d97706;">
+                <div class="stat-label" style="color:#d97706;">Kuliner &amp; Jajanan</div>
+                <div class="stat-value" style="color:#d97706;" id="statUmkmKuliner">8</div>
+              </div>
+              <div class="stat-card" style="border-left:3px solid #7c2d12;">
+                <div class="stat-label" style="color:#7c2d12;">Kerajinan &amp; Seni</div>
+                <div class="stat-value" style="color:#7c2d12;" id="statUmkmKerajinan">3</div>
+              </div>
+              <div class="stat-card" style="border-left:3px solid #047857;">
+                <div class="stat-label" style="color:#047857;">Warung &amp; Pertanian</div>
+                <div class="stat-value" style="color:#047857;" id="statUmkmWarung">3</div>
+              </div>
+            </div>
+
+            <!-- Table Responsive -->
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Nama UMKM &amp; Kategori</th>
+                    <th>Alamat / Dusun</th>
+                    <th>Koordinat (Lat, Lng)</th>
+                    <th>Google Maps Link</th>
+                    <th>Deskripsi Ringkas</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="umkmTableBody">
+                  <!-- Rendered via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             TAB: PENGATURAN & BACKUP
+             ══════════════════════════════════════════════════ -->
+        <section id="tab-settings" class="admin-tab-pane" aria-label="Pengaturan & Backup">
+          <div class="admin-card">
+            <h3 class="card-title-header"><i class="fa-solid fa-database"></i> Backup &amp; Restore JSON Data</h3>
+            <p class="text-muted" style="margin-bottom:18px; line-height:1.6;">
+              Unduh cadangan data CMS dalam bentuk file JSON atau unggah file backup untuk mengembalikan data.
+            </p>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <button id="btnExportJSON" class="btn-admin btn-admin-primary">
+                <i class="fa-solid fa-file-code"></i> Export Data JSON
+              </button>
+              <button id="btnExportExcel" class="btn-admin btn-admin-accent"
+                style="background:#107c41; border-color:#107c41; color:#ffffff;">
+                <i class="fa-solid fa-file-excel"></i> Export Data Excel (.xlsx)
+              </button>
+              <label class="btn-admin btn-admin-outline" style="cursor:pointer;">
+                <i class="fa-solid fa-upload"></i> Import File JSON
+                <input type="file" id="btnImportJSON" accept=".json" style="display:none;">
+              </label>
+              <button id="btnResetCMS" class="btn-admin btn-admin-danger">
+                <i class="fa-solid fa-rotate-left"></i> Reset Ke Data Default
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /admin-content-body -->
+    </main>
+  </div><!-- /admin-layout -->
+
+  <!-- =========================================================
+       UNIVERSAL CRUD EDIT MODAL
+       ========================================================= -->
+  <div class="modal-admin-overlay" id="crudModalOverlay" role="dialog" aria-modal="true"
+    aria-labelledby="crudModalTitle">
+    <div class="modal-admin-card">
+      <div class="modal-admin-header">
+        <h3 class="modal-admin-title" id="crudModalTitle">Edit Item</h3>
+        <button class="modal-admin-close" id="crudModalCloseBtn" aria-label="Tutup modal">&times;</button>
+      </div>
+      <div class="modal-admin-body" id="crudModalBody">
+        <!-- Form dynamic elements rendered via admin.js -->
+      </div>
+      <div class="modal-admin-footer">
+        <button class="btn-admin btn-admin-outline" id="crudModalCancelBtn">Batal</button>
+        <button class="btn-admin btn-admin-accent" id="crudModalSaveBtn">
+          <i class="fa-solid fa-check"></i> Simpan Data
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       LOGOUT CONFIRMATION MODAL
+       ========================================================= -->
+  <div class="admin-modal-overlay" id="logoutModalOverlay" role="dialog" aria-modal="true"
+    aria-labelledby="logoutModalTitle">
+    <div class="admin-modal-dialog">
+      <div class="logout-icon-box">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </div>
+      <h3 id="logoutModalTitle" style="font-size:1.25rem; font-weight:700; margin-bottom:8px; color:var(--admin-text);">
+        Konfirmasi Keluar</h3>
+      <p style="font-size:0.88rem; color:var(--admin-muted); margin-bottom:24px; line-height:1.5;">
+        Apakah Anda yakin ingin keluar dari panel CMS Admin Desa Ngawen? Sesi aktif Anda akan diakhiri.
+      </p>
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <button type="button" class="btn-admin btn-admin-outline" id="cancelLogoutBtn" style="flex:1;">
+          Batal
+        </button>
+        <button type="button" class="btn-admin btn-admin-danger" id="confirmLogoutBtn" style="flex:1;">
+          <i class="fa-solid fa-right-from-bracket"></i> Ya, Keluar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- SheetJS Library for Excel Export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- Scripts -->
+  <script src="js/security.js?v=20260819"></script>
+  <script src="js/cms.js?v=20260819"></script>
+  <script src="js/admin.js?v=20260819"></script>
+
+</body>
+
+</html>

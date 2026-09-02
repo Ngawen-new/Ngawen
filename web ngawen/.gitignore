@@ -1,0 +1,17 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Sensitive user database and security logs (JANGAN COMMIT KE GITHUB)
+data/users.json
+data/security_log.json
+
+# Build & OS files
+.netlify/
+.DS_Store
+Thumbs.db

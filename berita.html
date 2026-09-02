@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Berita &amp; Pengumuman — Sistem Informasi Desa Ngawen</title>
+  <meta name="description"
+    content="Portal Resmi Berita & Pengumuman Desa Ngawen, Kecamatan Muntilan, Kabupaten Magelang — Kabar terbaru, prestasi desa, warta pembangunan, kesehatan, dan kegiatan warga.">
+  <meta name="theme-color" content="#0f3822">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Berita &amp; Pengumuman — Desa Ngawen, Muntilan">
+  <meta property="og:description" content="Kabar terbaru dan pengumuman resmi Pemerintah Desa Ngawen, Kec. Muntilan, Kab. Magelang.">
+  <meta property="og:image" content="assets/candi.png">
+
+  <!-- Favicon SVG -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f3822'/><path d='M20 75 L50 25 L80 75 Z' fill='%23fbbf24'/><path d='M35 75 L50 45 L65 75 Z' fill='%23ffffff'/></svg>">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Berita Page Custom Styles (injected inline below) -->
+  <style>
+    /* ── Berita Page Layout ─────────────────────────── */
+    .berita-page-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .berita-page-layout { grid-template-columns: 1fr; }
+      .berita-sidebar { display: none; }
+    }
+    @media (max-width: 768px) {
+      .featured-article-hero {
+        height: 280px;
+        border-radius: 16px;
+        margin-bottom: 20px;
+      }
+      .featured-content {
+        padding: 18px 18px 16px;
+      }
+      .featured-title {
+        font-size: 1.15rem;
+        margin-bottom: 8px;
+      }
+      .featured-meta {
+        font-size: 0.75rem;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .featured-read-btn {
+        padding: 5px 14px;
+        font-size: 0.75rem;
+      }
+      .berita-hero-title {
+        font-size: 1.3rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .featured-article-hero {
+        height: 230px;
+      }
+      .featured-title {
+        font-size: 1.02rem;
+        -webkit-line-clamp: 2;
+      }
+      .featured-eyebrow {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+      }
+    }
+
+    /* Featured Article Hero */
+    .featured-article-hero {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 380px;
+      cursor: pointer;
+      margin-bottom: 32px;
+      box-shadow: 0 12px 40px rgba(15,56,34,0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .featured-article-hero:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(15,56,34,0.22);
+    }
+    .featured-article-hero img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .featured-article-hero:hover img { transform: scale(1.04); }
+
+    .featured-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(5,20,10,0.92) 0%, rgba(5,20,10,0.4) 55%, transparent 100%);
+    }
+    .featured-content {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 28px 28px 24px;
+    }
+    .featured-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--gold-400); color: #0f3822;
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+    .featured-title {
+      font-size: 1.5rem; font-weight: 800; color: #ffffff;
+      line-height: 1.3; margin: 0 0 10px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .featured-meta {
+      display: flex; gap: 16px; align-items: center;
+      font-size: 0.8rem; color: rgba(255,255,255,0.75);
+    }
+    .featured-read-btn {
+      margin-left: auto;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #fff;
+      padding: 7px 18px;
+      border-radius: 30px;
+      font-size: 0.8rem; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      backdrop-filter: blur(8px);
+      transition: background 0.2s ease;
+    }
+    .featured-read-btn:hover { background: rgba(255,255,255,0.28); }
+
+    /* Section divider label */
+    .berita-section-label {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.78rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--brand-700); margin-bottom: 16px;
+    }
+    .berita-section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--border-light);
+    }
+
+    /* Sidebar */
+    .berita-sidebar {
+      position: sticky; top: 88px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .sidebar-card {
+      background: var(--card-bg, var(--bg-surface));
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .sidebar-card-title {
+      font-size: 0.8rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--brand-700); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* Sidebar Stats */
+    .sidebar-stats-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .sidebar-stat-box {
+      background: var(--bg-main, #f8fafc);
+      border: 1px solid var(--border-light);
+      border-radius: 10px; padding: 12px 10px;
+      text-align: center;
+    }
+    .sidebar-stat-number {
+      font-size: 1.5rem; font-weight: 800;
+      color: var(--brand-900); line-height: 1;
+      margin-bottom: 4px;
+    }
+    .sidebar-stat-label {
+      font-size: 0.68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--slate-500);
+    }
+
+    /* Sidebar Berita Terbaru list */
+    .sidebar-berita-list { display: flex; flex-direction: column; gap: 12px; }
+    .sidebar-berita-item {
+      display: flex; gap: 10px; align-items: flex-start;
+      cursor: pointer; padding: 8px; border-radius: 10px;
+      transition: background 0.2s;
+    }
+    .sidebar-berita-item:hover { background: var(--bg-main, #f1f5f9); }
+    .sidebar-berita-thumb {
+      width: 60px; height: 50px; border-radius: 8px;
+      object-fit: cover; flex-shrink: 0;
+    }
+    .sidebar-berita-info { flex: 1; min-width: 0; }
+    .sidebar-berita-judul {
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--slate-800); line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .sidebar-berita-date {
+      font-size: 0.7rem; color: var(--slate-500); margin-top: 4px;
+    }
+
+    /* Kategori pills link bar in sidebar */
+    .sidebar-kat-grid {
+      display: flex; flex-wrap: wrap; gap: 7px;
+    }
+    .sidebar-kat-pill {
+      padding: 5px 12px; border-radius: 20px;
+      font-size: 0.73rem; font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer; transition: all 0.2s;
+    }
+
+    /* Berita page hero sub-bar */
+    .berita-hero-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .berita-hero-title { 
+      font-size: 1.6rem; font-weight: 800; color: var(--slate-900); 
+      margin: 0; line-height: 1.2; 
+    }
+    .berita-hero-sub { font-size: 0.85rem; color: var(--slate-600); margin-top: 4px; }
+    .berita-realtime-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.3);
+      color: #065f46; padding: 5px 12px; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 700;
+    }
+    .berita-realtime-badge .rt-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #10b981; animation: pulse-dot 1.5s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* Dark mode sidebar */
+    [data-theme="dark"] .sidebar-card { background: var(--bg-surface); }
+    [data-theme="dark"] .sidebar-stat-box { background: rgba(255,255,255,0.04); }
+    [data-theme="dark"] .sidebar-berita-judul { color: #e2e8f0; }
+    [data-theme="dark"] .sidebar-berita-item:hover { background: rgba(255,255,255,0.06); }
+    [data-theme="dark"] .berita-hero-title { color: #fff; }
+    [data-theme="dark"] .featured-title { color: #fff; }
+  </style>
+
+  <!-- Early Theme Bootstrap -->
+  <script>
+    (function() {
+      var t = localStorage.getItem('desa_theme');
+      if (t === 'dark') document.documentElement.setAttribute('data-theme','dark');
+      else if (t === 'light') document.documentElement.setAttribute('data-theme','light');
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches) document.documentElement.setAttribute('data-theme','dark');
+      else document.documentElement.setAttribute('data-theme','light');
+    })();
+  </script>
+</head>
+
+<body>
+
+  <!-- Backdrop overlay for mobile menu drawer -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <!-- Mobile Slide-Out Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="mobile-drawer-header">
+      <div class="drawer-title"><i class="fa-solid fa-compass" style="color:var(--gold-400); margin-right:8px;"></i>Menu Navigasi</div>
+      <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Tutup Menu"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mobile-drawer-body">
+      <a href="index.html" class="nav-tab-btn"><i class="fa-solid fa-house-chimney"></i> Profil Desa</a>
+      <a href="index.html#sec-pemerintahan" class="nav-tab-btn"><i class="fa-solid fa-building-columns"></i> Pemerintahan</a>
+      <a href="index.html#sec-potensi" class="nav-tab-btn"><i class="fa-solid fa-seedling"></i> Potensi Desa</a>
+      <a href="index.html#sec-kemasyarakatan" class="nav-tab-btn"><i class="fa-solid fa-users"></i> Kemasyarakatan</a>
+      <a href="index.html#sec-kelompok" class="nav-tab-btn"><i class="fa-solid fa-people-group"></i> Kelompok</a>
+      <a href="index.html#sec-wilayah" class="nav-tab-btn"><i class="fa-solid fa-map-location-dot"></i> Wilayah &amp; Lahan</a>
+      <a href="berita.html" class="nav-tab-btn active"><i class="fa-solid fa-newspaper"></i> Berita &amp; Pengumuman</a>
+    </div>
+    <div class="mobile-drawer-footer">
+      <button class="nav-theme-btn theme-toggle-btn" id="drawerThemeToggleBtn">
+        <i class="fa-solid fa-moon"></i> <span>Mode Gelap</span>
+      </button>
+      <a href="index.html" class="btn-back-portal mobile-back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Beranda Utama
+      </a>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       TOP GOVERNMENT BAR
+       ========================================================= -->
+  <div class="gov-top-bar">
+    <div class="container gov-container">
+      <div class="gov-status">
+        <span class="status-dot"></span>
+        <span><strong>Pusat Berita &amp; Pengumuman Resmi</strong> — Desa Ngawen, Kec. Muntilan, Kab. Magelang</span>
+      </div>
+      <div class="gov-top-right">
+        <div class="gov-location-text"><span>Real-time · Transparan · Terpercaya</span></div>
+        <div class="a11y-controls">
+          <button class="a11y-btn" id="fontSizeDecBtn" title="Kecilkan Teks">A-</button>
+          <button class="a11y-btn" id="fontSizeResetBtn" title="Ukuran Normal">A</button>
+          <button class="a11y-btn" id="fontSizeIncBtn" title="Besarkan Teks">A+</button>
+          <span class="a11y-divider"></span>
+          <button class="a11y-btn theme-toggle-btn" id="themeToggleBtn" title="Mode Gelap/Terang">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <a href="admin.html" class="a11y-btn" title="Admin CMS"
+            style="text-decoration:none; padding:4px 10px; font-size:0.78rem; font-weight:700; background:var(--gold-400); color:#0f3822; border-radius:6px; margin-left:6px; display:inline-flex; align-items:center; gap:4px;">
+            <i class="fa-solid fa-user-gear"></i> Admin CMS
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MAIN STICKY HEADER
+       ========================================================= -->
+  <header class="main-header">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand-identity" style="text-decoration:none;" title="Kembali ke Beranda">
+        <div class="brand-logo-badge" id="siteLogo">
+          <i class="fa-solid fa-mountain-sun"></i>
+        </div>
+        <div class="brand-text">
+          <h1 id="siteBrandTitle">Desa Ngawen</h1>
+          <span id="siteBrandSub">Kab. Magelang, Jawa Tengah</span>
+        </div>
+      </a>
+
+      <nav class="desktop-nav-tabs">
+        <a href="index.html" class="nav-tab-btn"><i class="fa-solid fa-house-chimney"></i> Profil Desa</a>
+        <a href="index.html#sec-pemerintahan" class="nav-tab-btn"><i class="fa-solid fa-building-columns"></i> Pemerintahan</a>
+        <a href="index.html#sec-potensi" class="nav-tab-btn"><i class="fa-solid fa-seedling"></i> Potensi Desa</a>
+        <a href="index.html#sec-kemasyarakatan" class="nav-tab-btn"><i class="fa-solid fa-users"></i> Kemasyarakatan</a>
+        <a href="index.html#sec-kelompok" class="nav-tab-btn"><i class="fa-solid fa-people-group"></i> Kelompok</a>
+        <a href="index.html#sec-wilayah" class="nav-tab-btn"><i class="fa-solid fa-map-location-dot"></i> Wilayah &amp; Lahan</a>
+        <a href="berita.html" class="nav-tab-btn active"><i class="fa-solid fa-newspaper"></i> Berita</a>
+      </nav>
+
+      <div class="header-right-actions">
+        <button class="nav-theme-btn theme-toggle-btn desktop-theme-btn" id="desktopThemeToggleBtn">
+          <i class="fa-solid fa-moon"></i> <span>Mode Gelap</span>
+        </button>
+        <a href="index.html" class="btn-back-portal desktop-back-btn">
+          <i class="fa-solid fa-arrow-left"></i> Beranda Utama
+        </a>
+      </div>
+
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Buka Menu" aria-expanded="false">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       MAIN CONTENT
+       ========================================================= -->
+  <main class="main-content" style="padding: 32px 0 64px;">
+    <div class="container">
+
+      <!-- Hero Header -->
+      <div class="berita-hero-bar">
+        <div>
+          <h2 class="berita-hero-title">
+            <i class="fa-solid fa-newspaper" style="color:var(--brand-700); margin-right:10px;"></i>
+            Berita &amp; Pengumuman Desa Ngawen
+          </h2>
+          <p class="berita-hero-sub">Informasi resmi, warta pembangunan, prestasi warga, dan agenda kegiatan terkini.</p>
+        </div>
+        <div class="berita-realtime-badge">
+          <div class="rt-dot"></div>
+          Sinkron Real-time
+        </div>
+      </div>
+
+      <!-- Featured Article Hero (berita pertama / terbaru) -->
+      <div class="featured-article-hero" id="featuredArticleHero" style="display:none;">
+        <img id="featuredImg" src="assets/candi.png" alt="Berita Unggulan">
+        <div class="featured-overlay"></div>
+        <div class="featured-content">
+          <div class="featured-eyebrow"><i class="fa-solid fa-star"></i> <span id="featuredKategori">Berita</span></div>
+          <h3 class="featured-title" id="featuredTitle">Memuat berita terbaru...</h3>
+          <div class="featured-meta">
+            <span><i class="fa-regular fa-calendar"></i> <span id="featuredDate"></span></span>
+            <span><i class="fa-solid fa-user-pen"></i> <span id="featuredPenulis">Redaksi</span></span>
+            <button class="featured-read-btn" id="featuredReadBtn" type="button">
+              <i class="fa-solid fa-book-open"></i> Baca Selengkapnya
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main 2-column layout -->
+      <div class="berita-page-layout">
+
+        <!-- LEFT — Article Grid -->
+        <div>
+          <!-- Search + Filter Bar -->
+          <section class="berita-controls-bar" style="margin-bottom: 20px;">
+            <div class="berita-search-wrap">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="beritaSearchInput" placeholder="Cari berita, topik, atau kata kunci..." autocomplete="off">
+            </div>
+            <div class="berita-filter-pills" id="beritaFilterPills">
+              <button class="berita-filter-pill active" data-filter="Semua">Semua</button>
+              <button class="berita-filter-pill" data-filter="Berita Lokal"><i class="fa-solid fa-newspaper"></i> Berita Lokal</button>
+              <button class="berita-filter-pill" data-filter="Kegiatan Desa"><i class="fa-solid fa-users"></i> Kegiatan Desa</button>
+              <button class="berita-filter-pill" data-filter="Posyandu Waluyo Jiwo"><i class="fa-solid fa-heart-pulse"></i> Posyandu Waluyo Jiwo</button>
+              <button class="berita-filter-pill" data-filter="Posyandu ILP"><i class="fa-solid fa-user-nurse"></i> Posyandu ILP</button>
+            </div>
+          </section>
+
+          <!-- Section Label -->
+          <div class="berita-section-label" id="beritaSectionLabel">
+            <i class="fa-solid fa-grid"></i>
+            <span id="beritaCountLabel">Semua Berita</span>
+          </div>
+
+          <!-- Cards Grid -->
+          <div class="berita-cards-grid" id="beritaCardsGrid">
+            <div class="berita-loading-state" style="grid-column: 1/-1; padding:50px 20px;">
+              <i class="fa-solid fa-circle-notch fa-spin" style="font-size:2.5rem; color:var(--brand-700); margin-bottom:12px; display:block;"></i>
+              <p style="font-size:0.9rem; font-weight:600; color:var(--slate-600);">Memuat berita dari Desa Ngawen...</p>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div class="berita-empty-state" id="beritaEmptyState" style="display:none; margin-top:12px;">
+            <i class="fa-solid fa-newspaper"></i>
+            <h4>Tidak ada berita ditemukan</h4>
+            <p>Coba sesuaikan kata kunci atau pilih kategori berbeda.</p>
+          </div>
+        </div>
+
+        <!-- RIGHT — Sidebar -->
+        <aside class="berita-sidebar">
+
+          <!-- Portal Widget -->
+          <div class="sidebar-card">
+            <div class="sidebar-card-title"><i class="fa-solid fa-compass"></i> Portal Layanan</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <a href="https://jdih.magelangkab.go.id" target="_blank" style="display:flex; align-items:center; gap:10px; padding:10px; border:1px solid var(--border-light); border-radius:10px; text-decoration:none; color:inherit; font-size:0.82rem; font-weight:700; transition:background 0.2s;">
+                <i class="fa-solid fa-scale-balanced" style="color:var(--brand-700); font-size:1.1rem;"></i>
+                <div>
+                  <div style="color:var(--slate-800);">JDIH Kabupaten</div>
+                  <div style="font-size:0.7rem; color:var(--slate-500); font-weight:500;">Peraturan & Produk Hukum</div>
+                </div>
+              </a>
+              <a href="https://desangawen.magelangkab.go.id/First/jelajah" target="_blank" style="display:flex; align-items:center; gap:10px; padding:10px; border:1px solid var(--border-light); border-radius:10px; text-decoration:none; color:inherit; font-size:0.82rem; font-weight:700; transition:background 0.2s;">
+                <i class="fa-solid fa-map-location-dot" style="color:var(--brand-700); font-size:1.1rem;"></i>
+                <div>
+                  <div style="color:var(--slate-800);">Jelajah Desa</div>
+                  <div style="font-size:0.7rem; color:var(--slate-500); font-weight:500;">Peta Wilayah & Potensi Desa</div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- 96,8 FM Radio Gemilang Player -->
+          <div class="sidebar-card">
+            <div class="sidebar-card-title"><i class="fa-solid fa-radio" style="color:#d97706;"></i> 96,8 FM Radio Gemilang</div>
+            <div style="padding-top:2px;">
+              <p style="font-size:0.74rem; color:var(--slate-600); margin-bottom:8px;">Streaming Langsung Radio Pemkab Magelang</p>
+              <audio controls style="width:100%; height:40px; border-radius:8px;" src="https://streaming-radio.magelangkab.go.id/studio"></audio>
+            </div>
+          </div>
+
+          <!-- Konten Populer -->
+          <div class="sidebar-card">
+            <div class="sidebar-card-title"><i class="fa-solid fa-fire" style="color:#ef4444;"></i> Konten Populer</div>
+            <div class="sidebar-berita-list" id="sidebarPopulerList">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Statistik Berita -->
+          <div class="sidebar-card">
+            <div class="sidebar-card-title"><i class="fa-solid fa-chart-bar"></i> Statistik Berita</div>
+            <div class="sidebar-stats-grid">
+              <div class="sidebar-stat-box">
+                <div class="sidebar-stat-number" id="sidebarTotal">0</div>
+                <div class="sidebar-stat-label">Total Berita</div>
+              </div>
+              <div class="sidebar-stat-box">
+                <div class="sidebar-stat-number" id="sidebarBulanIni">0</div>
+                <div class="sidebar-stat-label">Bulan Ini</div>
+              </div>
+              <div class="sidebar-stat-box">
+                <div class="sidebar-stat-number" id="sidebarKategori">0</div>
+                <div class="sidebar-stat-label">Kategori</div>
+              </div>
+              <div class="sidebar-stat-box">
+                <div class="sidebar-stat-number" id="sidebarTerbaru">—</div>
+                <div class="sidebar-stat-label">Tahun</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jelajah Kategori -->
+          <div class="sidebar-card">
+            <div class="sidebar-card-title"><i class="fa-solid fa-tags"></i> Kategori Berita</div>
+            <div class="sidebar-kat-grid" id="sidebarKatGrid">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- 5 Berita Terbaru -->
+          <div class="sidebar-card">
+            <div class="sidebar-card-title"><i class="fa-solid fa-clock-rotate-left"></i> Berita Terbaru</div>
+            <div class="sidebar-berita-list" id="sidebarBeritaList">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Back to Home CTA -->
+          <a href="index.html" style="display:flex; align-items:center; justify-content:center; gap:8px; background:linear-gradient(135deg,#0f3822,#1b5e3a); color:#fff; text-decoration:none; padding:13px 20px; border-radius:14px; font-size:0.85rem; font-weight:700; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
+            <i class="fa-solid fa-house-chimney"></i> Kembali ke Beranda Desa
+          </a>
+
+        </aside>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Real-time Sync Toast -->
+  <div id="liveSyncToast" style="position:fixed; bottom:20px; left:20px; z-index:9999; background:rgba(15,56,34,0.94); color:#fff; backdrop-filter:blur(8px); padding:10px 18px; border-radius:30px; font-size:0.8rem; font-weight:700; box-shadow:0 6px 20px rgba(0,0,0,0.25); display:none; align-items:center; gap:8px; border:1px solid rgba(251,191,36,0.55); transition:opacity 0.3s;">
+    <i class="fa-solid fa-bolt" style="color:#fbbf24;"></i>
+    <span>Berita Baru Tersedia! Diperbarui Real-time.</span>
+  </div>
+
+  <!-- =========================================================
+       BERITA ARTICLE READER MODAL
+       ========================================================= -->
+  <div class="modal-overlay" id="beritaModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-card berita-modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="berita-modal-kategori" id="beritaModalKategori">Berita</span>
+          <h3 class="modal-title" id="beritaModalTitle">Judul Berita</h3>
+        </div>
+        <button class="modal-close-btn" id="beritaModalCloseBtn" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body berita-modal-body" id="beritaModalBody">
+        <div class="berita-modal-meta" id="beritaModalMeta"></div>
+        <div class="berita-modal-img-wrap" id="beritaModalImgWrap"></div>
+        <div class="berita-modal-isi" id="beritaModalIsi"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-close" id="beritaModalFooterClose">Tutup Artikel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to top -->
+  <button class="back-to-top-btn" id="backToTopBtn" aria-label="Kembali ke Atas">
+    <svg class="progress-ring" width="44" height="44">
+      <circle class="progress-ring-circle" stroke="var(--gold-400)" stroke-width="3" fill="transparent" r="18" cx="22" cy="22"/>
+    </svg>
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <!-- Footer -->
+  <footer class="gov-site-footer">
+    <div class="container footer-inner-content">
+      <div class="footer-brand-info">
+        <h3>Pemerintah Desa Ngawen</h3>
+        <p>Kecamatan Muntilan · Kabupaten Magelang · Jawa Tengah &nbsp;&copy;&nbsp;2026</p>
+        <p class="footer-kkn-credit">By, KKN Sekolah Tinggi Multi Media Yogyakarta (STMM) MMTC</p>
+      </div>
+      <a href="index.html" class="btn-back-portal">
+        <i class="fa-solid fa-arrow-left"></i> Beranda Utama Desa Ngawen
+      </a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/security.js"></script>
+  <script src="js/cms.js"></script>
+  <script src="js/berita.js"></script>
+
+</body>
+
+</html>

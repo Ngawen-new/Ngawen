@@ -1,0 +1,30 @@
+[
+  {
+    "id": "user_1",
+    "username": "admin",
+    "passwordHash": "$2b$10$epPnpbQdEyICOX9AgkrpTu/w9a.qD27SCqQ3FYeXxG3iLCEuGVnPG",
+    "namaLengkap": "Administrator Utama",
+    "jabatan": "Super Administrator",
+    "email": "admin@desangawen.id",
+    "role": "superadmin",
+    "aktif": true,
+    "dibuat": "2026-08-15T08:21:02.404Z",
+    "loginAttempts": 0,
+    "lockedUntil": null,
+    "lastLogin": "2026-09-02T06:24:22.813Z"
+  },
+  {
+    "id": "user_2",
+    "username": "operator",
+    "passwordHash": "$2b$10$vCnfQR9hSrmOQMIFvC7jreWJqxIud7xKb1FFq.lzSpVHjRU45zi1C",
+    "namaLengkap": "Operator Desa Ngawen",
+    "jabatan": "Staf Pelayanan & Informasi",
+    "email": "operator@desangawen.id",
+    "role": "operator",
+    "aktif": true,
+    "dibuat": "2026-08-15T13:46:40.000Z",
+    "loginAttempts": 0,
+    "lockedUntil": null,
+    "lastLogin": "2026-08-25T11:55:53.090Z"
+  }
+]

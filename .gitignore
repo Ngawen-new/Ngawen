@@ -1,0 +1,19 @@
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Environment variables (JANGAN di-commit ke GitHub!)
+.env
+.env.local
+.env.production
+
+# Netlify cache
+.netlify/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Sensitive data (jangan commit ke repo publik)
+web ngawen/data/users.json
+web ngawen/data/security_log.json

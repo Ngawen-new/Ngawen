@@ -1,0 +1,58 @@
+# ============================================================
+#  Netlify Configuration — Sistem Informasi Desa Ngawen
+#  Static site + Serverless Functions (API)
+# ============================================================
+
+[build]
+  # Publish directory contains the static website files
+  publish = "web ngawen"
+  # Serverless functions directory
+  functions = "netlify/functions"
+  # No build step needed (pure static + pre-built JS)
+  command = "echo 'Desa Ngawen — Static site ready!'"
+
+[build.environment]
+  NODE_VERSION = "18"
+  GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/1U-7voZdOpiAwoZdXZ98Orts92vCT1A7OlIDs0wk7r8hMQjlDzPMwOqro/exec"
+
+[functions]
+  # Use esbuild to bundle Node.js functions + dependencies
+  node_bundler = "esbuild"
+  included_files = ["web ngawen/data/content.json"]
+
+# ============================================================
+#  API REDIRECT: /api/* → Netlify Serverless Function
+# ============================================================
+[[redirects]]
+  from   = "/api/*"
+  to     = "/.netlify/functions/api"
+  status = 200
+  force  = true
+
+# ============================================================
+#  SECURITY HEADERS (Applied to all pages)
+# ============================================================
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options            = "SAMEORIGIN"
+    X-XSS-Protection           = "1; mode=block"
+    X-Content-Type-Options     = "nosniff"
+    Referrer-Policy            = "strict-origin-when-cross-origin"
+    Permissions-Policy         = "camera=(), microphone=(), geolocation=()"
+
+# Cache static assets aggressively
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
