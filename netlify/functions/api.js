@@ -24,10 +24,24 @@ try {
 
 const app = express();
 
+if (!process.env.JWT_SECRET) {
+  console.warn('[SECURITY WARNING] JWT_SECRET tidak di-set di environment variable! Menggunakan fallback secret default.');
+}
+
 const JWT_SECRET = process.env.JWT_SECRET || 'Ngawen_Secured_JWT_8f9a2b4c6e1d3f5a7b9c0d2e4f6a8b1c3d5e7f9a0b2c4d6e8f1a3b5c7d9e0f';
 const JWT_EXPIRES = '8h';
 
+// Security Headers Middleware
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  next();
+});
+
 app.use(express.json({ limit: '10mb' }));
+
 
 // ============================================================
 //  STORAGE ABSTRACTION
