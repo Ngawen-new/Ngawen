@@ -3212,6 +3212,76 @@ async function initAdmin() {
     });
   });
 
+  // 7-Step Security Layer Dashboard Renderer
+  async function renderSecurityDashboard() {
+    const grid = document.getElementById('securityLayersGrid');
+    const tableBody = document.getElementById('securityLogTableBody');
+    if (!grid) return;
+
+    const statusData = await Security.getSecurityOverview();
+    if (statusData && statusData.layers) {
+      grid.innerHTML = statusData.layers.map(layer => `
+        <div class="stat-card" style="border-left: 4px solid #10b981; background: var(--admin-card-bg, #ffffff); padding: 14px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-weight: 700; font-size: 0.88rem; color: var(--admin-primary, #0f3822); display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid ${layer.icon || 'fa-shield-halved'}" style="color: #10b981; font-size: 1.1rem;"></i>
+              Step ${layer.step}: ${layer.name}
+            </div>
+            <span class="badge badge-success" style="font-size: 0.72rem; padding: 2px 8px; border-radius: 6px;">
+              <i class="fa-solid fa-check-circle"></i> ${layer.status}
+            </span>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--admin-muted, #64748b); line-height: 1.4;">
+            ${layer.details}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    try {
+      const res = await Security.authFetch('/api/security/logs');
+      if (res.ok && tableBody) {
+        const logs = await res.json();
+        if (logs && logs.length > 0) {
+          tableBody.innerHTML = logs.slice(0, 30).map(log => {
+            const timeStr = log.timestamp ? new Date(log.timestamp).toLocaleString('id-ID') : '-';
+            let riskBadge = '<span class="badge badge-info">INFO</span>';
+            if (log.severity === 'WARN' || (log.type && log.type.includes('FAILED'))) {
+              riskBadge = '<span class="badge" style="background: #f97316; color: #fff;">SEDANG</span>';
+            } else if (log.severity === 'CRITICAL' || (log.type && (log.type.includes('BLOCKED') || log.type.includes('LOCKED')))) {
+              riskBadge = '<span class="badge badge-danger">TINGGI</span>';
+            }
+            return `
+              <tr>
+                <td style="font-size: 0.8rem; font-family: monospace;">${timeStr}</td>
+                <td><span class="badge badge-secondary" style="font-size: 0.75rem;">${Security.sanitizeHTML(log.type || 'LOG')}</span></td>
+                <td style="font-weight: 600;">${Security.sanitizeHTML(log.username || log.by || log.nama || 'System')}</td>
+                <td style="font-size: 0.8rem; color: var(--admin-muted);">${Security.sanitizeHTML(log.ip || '-')} ${log.reason ? `(${Security.sanitizeHTML(log.reason)})` : ''}</td>
+                <td>${riskBadge}</td>
+              </tr>
+            `;
+          }).join('');
+          return;
+        }
+      }
+    } catch (e) {}
+
+    if (tableBody) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; color: var(--admin-muted); padding: 16px;">
+            Belum ada aktivitas ancaman tercatat (Sistem Terlindungi).
+          </td>
+        </tr>
+      `;
+    }
+  }
+
+  document.getElementById('btnRefreshSecurityStatus')?.addEventListener('click', () => {
+    renderSecurityDashboard();
+    showToast('Status keamanan 7 lapisan diperbarui!');
+  });
+
   // Populate initially
   populateForms(currentData);
   populateUserSettings();
@@ -3221,6 +3291,7 @@ async function initAdmin() {
   renderLokasiTable(currentData);
   populateKontakResmi(currentData);
   populateChartsData(currentData);
+  renderSecurityDashboard();
 }
 
 if (document.readyState === 'loading') {
