@@ -21,7 +21,28 @@ window.doGlobalQuickLogin = function (role) {
     if (uInput) uInput.value = 'operator';
     if (pInput) pInput.value = 'operator123';
   }
-  window.doGlobalLogin();
+window.doGlobalLogout = function () {
+  if (window.Security) window.Security.logout('manual');
+  if (window.cmsEngine) window.cmsEngine.logout();
+  sessionStorage.removeItem('desa_ngawen_jwt_token');
+  sessionStorage.removeItem('desa_ngawen_current_user');
+  localStorage.removeItem('desa_ngawen_admin_auth');
+
+  const overlay = document.getElementById('authOverlay');
+  if (overlay) {
+    overlay.style.cssText = 'display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:all!important;';
+    overlay.classList.remove('hidden');
+    overlay.removeAttribute('hidden');
+  }
+
+  const logoutOverlay = document.getElementById('logoutModalOverlay');
+  if (logoutOverlay) {
+    logoutOverlay.classList.remove('active');
+    logoutOverlay.style.cssText = '';
+  }
+
+  if (typeof window._updateSessionBar === 'function') window._updateSessionBar();
+  if (typeof window._showToast === 'function') window._showToast('Anda telah keluar dari panel CMS.', 'info');
 };
 
 window.doGlobalLogin = async function () {
@@ -262,16 +283,23 @@ async function initAdmin() {
 
   // ── Logout Modal Flow ───────────────────────────────────────
   function openLogoutModal() {
-    if (logoutModalOverlay) logoutModalOverlay.classList.add('active');
+    if (logoutModalOverlay) {
+      logoutModalOverlay.classList.add('active');
+      logoutModalOverlay.style.cssText = 'display:flex!important;visibility:visible!important;opacity:1!important;';
+    }
   }
 
   function closeLogoutModal() {
-    if (logoutModalOverlay) logoutModalOverlay.classList.remove('active');
+    if (logoutModalOverlay) {
+      logoutModalOverlay.classList.remove('active');
+      logoutModalOverlay.style.cssText = '';
+    }
   }
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       openLogoutModal();
     });
   }
@@ -289,10 +317,7 @@ async function initAdmin() {
   if (confirmLogoutBtn) {
     confirmLogoutBtn.addEventListener('click', async () => {
       closeLogoutModal();
-      await cms.logout();
-      checkAuth();
-      updateSessionBar();
-      showToast('Anda telah keluar dari panel CMS.', 'info');
+      window.doGlobalLogout();
     });
   }
 
