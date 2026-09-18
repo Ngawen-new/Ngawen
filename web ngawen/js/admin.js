@@ -28,21 +28,13 @@ window.doGlobalLogout = function () {
   sessionStorage.removeItem('desa_ngawen_current_user');
   localStorage.removeItem('desa_ngawen_admin_auth');
 
-  const overlay = document.getElementById('authOverlay');
-  if (overlay) {
-    overlay.style.cssText = 'display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:all!important;';
-    overlay.classList.remove('hidden');
-    overlay.removeAttribute('hidden');
+  if (typeof window._showToast === 'function') {
+    window._showToast('Anda telah keluar dari panel CMS. Mengalihkan ke beranda...', 'info');
   }
 
-  const logoutOverlay = document.getElementById('logoutModalOverlay');
-  if (logoutOverlay) {
-    logoutOverlay.classList.remove('active');
-    logoutOverlay.style.cssText = '';
-  }
-
-  if (typeof window._updateSessionBar === 'function') window._updateSessionBar();
-  if (typeof window._showToast === 'function') window._showToast('Anda telah keluar dari panel CMS.', 'info');
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 300);
 };
 
 window.doGlobalLogin = async function () {
