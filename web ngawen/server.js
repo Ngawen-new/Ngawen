@@ -319,11 +319,14 @@ function verifyToken(req, res, next) {
   });
 }
 
+// --- STEP 3 (Part 2): 2FA Store ---
+const twoFactorStore = new Map();
+
 // ============================================================
 //  AUTH ROUTES
 // ============================================================
 
-// POST /api/auth/login
+// POST /api/auth/login — Step 1 Primary Auth & 2FA Challenge Generation
 app.post('/api/auth/login', loginLimiter, (req, res) => {
   let { username, password } = req.body;
   const ip = req.ip || req.connection.remoteAddress;
@@ -339,20 +342,20 @@ app.post('/api/auth/login', loginLimiter, (req, res) => {
 
   // User not found
   if (!user) {
-    appendSecurityLog({ type: 'LOGIN_FAILED', username, ip, reason: 'User tidak ditemukan' });
+    appendSecurityLog({ type: 'LOGIN_FAILED', username, ip, reason: 'User tidak ditemukan', severity: 'WARN' });
     return res.status(401).json({ error: 'Username atau password salah.' });
   }
 
   // Check if account is locked
   if (user.lockedUntil && new Date() < new Date(user.lockedUntil)) {
     const menit = Math.ceil((new Date(user.lockedUntil) - new Date()) / 60000);
-    appendSecurityLog({ type: 'LOGIN_BLOCKED', username, ip, reason: 'Akun terkunci' });
+    appendSecurityLog({ type: 'LOGIN_BLOCKED', username, ip, reason: 'Akun terkunci', severity: 'WARN' });
     return res.status(423).json({ error: `Akun terkunci sementara. Coba lagi dalam ${menit} menit.` });
   }
 
   // Check if user is active
   if (!user.aktif) {
-    appendSecurityLog({ type: 'LOGIN_FAILED', username, ip, reason: 'Akun dinonaktifkan' });
+    appendSecurityLog({ type: 'LOGIN_FAILED', username, ip, reason: 'Akun dinonaktifkan', severity: 'WARN' });
     return res.status(403).json({ error: 'Akun Anda telah dinonaktifkan. Hubungi administrator.' });
   }
 
@@ -378,42 +381,102 @@ app.post('/api/auth/login', loginLimiter, (req, res) => {
       user.lockedUntil = new Date(Date.now() + 30 * 60 * 1000).toISOString();
       user.loginAttempts = 0;
       saveUsers(users);
-      appendSecurityLog({ type: 'ACCOUNT_LOCKED', username, ip, reason: '5x percobaan gagal' });
+      appendSecurityLog({ type: 'ACCOUNT_LOCKED', username, ip, reason: '5x percobaan gagal', severity: 'CRITICAL' });
       return res.status(423).json({ error: 'Akun dikunci 30 menit karena 5x percobaan login gagal.' });
     }
 
     saveUsers(users);
     const remaining = 5 - user.loginAttempts;
-    appendSecurityLog({ type: 'LOGIN_FAILED', username, ip, reason: `Password salah (attempt ${user.loginAttempts})` });
+    appendSecurityLog({ type: 'LOGIN_FAILED', username, ip, reason: `Password salah (attempt ${user.loginAttempts})`, severity: 'WARN' });
     return res.status(401).json({ error: `Password salah. ${remaining} percobaan tersisa sebelum akun dikunci.` });
   }
 
-  // SUCCESS — reset attempts, issue JWT
+  // PRIMARY CREDENTIALS VALID — Reset login attempts
   user.loginAttempts = 0;
   user.lockedUntil   = null;
-  user.lastLogin     = new Date().toISOString();
   saveUsers(users);
 
+  // Generate 6-Digit 2FA OTP Challenge Code
+  const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+  const tempToken = '2fa_temp_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+
+  twoFactorStore.set(tempToken, {
+    userId: user.id,
+    username: user.username,
+    role: user.role,
+    code: otpCode,
+    expires: Date.now() + 5 * 60 * 1000 // valid 5 minutes
+  });
+
+  appendSecurityLog({ type: '2FA_CHALLENGE_ISSUED', username: user.username, ip, severity: 'INFO' });
+  console.log(`[${new Date().toLocaleTimeString()}] 🔐 2FA Code issued for ${user.username}: ${otpCode}`);
+
+  res.json({
+    success: true,
+    requires2FA: true,
+    tempToken,
+    username: user.username,
+    codeHint: otpCode
+  });
+});
+
+// POST /api/auth/verify-2fa — Step 2 Secondary Verification & JWT Token Issuance
+app.post('/api/auth/verify-2fa', (req, res) => {
+  const { tempToken, code } = req.body || {};
+  const ip = req.ip || req.connection.remoteAddress;
+
+  if (!tempToken || !code) {
+    return res.status(400).json({ error: 'Sesi 2FA dan Kode Verifikasi 6-Digit harus diisi.' });
+  }
+
+  const record = twoFactorStore.get(tempToken);
+
+  if (!record) {
+    appendSecurityLog({ type: '2FA_FAILED', ip, reason: 'Sesi 2FA tidak ditemukan/kadaluarsa', severity: 'WARN' });
+    return res.status(400).json({ error: 'Sesi 2FA kadaluarsa atau tidak valid. Silakan login ulang.' });
+  }
+
+  if (Date.now() > record.expires) {
+    twoFactorStore.delete(tempToken);
+    appendSecurityLog({ type: '2FA_FAILED', username: record.username, ip, reason: 'Kode 2FA kadaluarsa', severity: 'WARN' });
+    return res.status(400).json({ error: 'Kode OTP 2FA telah kadaluarsa. Silakan login kembali.' });
+  }
+
+  if (code.trim() !== record.code) {
+    appendSecurityLog({ type: '2FA_FAILED', username: record.username, ip, reason: 'Kode OTP 2FA salah', severity: 'WARN' });
+    return res.status(400).json({ error: 'Kode Verifikasi 2FA 6-digit salah. Periksa kembali kode Anda.' });
+  }
+
+  // 2FA VERIFIED — Issue Full JWT Session
+  twoFactorStore.delete(tempToken);
+
+  const users = loadUsers();
+  const user = users.find(u => u.username === record.username);
+  if (user) {
+    user.lastLogin = new Date().toISOString();
+    saveUsers(users);
+  }
+
   const token = jwt.sign(
-    { userId: user.id, username: user.username, role: user.role },
+    { userId: record.userId, username: record.username, role: record.role },
     JWT_SECRET,
     { expiresIn: JWT_EXPIRES }
   );
 
-  appendSecurityLog({ type: 'LOGIN_SUCCESS', username, ip });
-  console.log(`[${new Date().toLocaleTimeString()}] LOGIN: ${username} dari ${ip}`);
+  appendSecurityLog({ type: '2FA_VERIFIED_SUCCESS', username: record.username, ip, severity: 'INFO' });
+  console.log(`[${new Date().toLocaleTimeString()}] ✅ 2FA VERIFIED: ${record.username} dari ${ip}`);
 
   res.json({
     success: true,
     token,
     user: {
-      id: user.id,
-      username: user.username,
-      namaLengkap: user.namaLengkap,
-      jabatan: user.jabatan,
-      email: user.email,
-      role: user.role,
-      lastLogin: user.lastLogin
+      id: user ? user.id : record.userId,
+      username: record.username,
+      namaLengkap: user ? user.namaLengkap : record.username,
+      jabatan: user ? user.jabatan : 'Administrator',
+      email: user ? user.email : '',
+      role: record.role,
+      lastLogin: user ? user.lastLogin : new Date().toISOString()
     }
   });
 });

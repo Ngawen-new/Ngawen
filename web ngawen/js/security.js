@@ -103,7 +103,7 @@ const Security = (() => {
     return res;
   }
 
-  // ── Login ─────────────────────────────────────────────────
+  // ── Step 1 Login Primary Credentials ──────────────────────
   async function login(username, password) {
     const isDefaultAdmin = (username === 'admin' && (password === 'admin123' || password === 'admin' || password === 'SuperAdmin#Ngawen2026!'));
     const isDefaultOp = (username === 'operator' && (password === 'operator123' || password === 'operator' || password === 'Operator#Ngawen2026!'));
@@ -117,6 +117,16 @@ const Security = (() => {
 
       const data = await res.json().catch(() => ({}));
 
+      if (res.ok && data.requires2FA) {
+        return {
+          ok: true,
+          requires2FA: true,
+          tempToken: data.tempToken,
+          username: data.username || username,
+          codeHint: data.codeHint
+        };
+      }
+
       if (res.ok && data.token) {
         setToken(data.token);
         setCurrentUser(data.user);
@@ -128,16 +138,73 @@ const Security = (() => {
 
       // If server returned non-200, check if credentials match default accounts
       if (isDefaultAdmin || isDefaultOp) {
-        return createFallbackSession(username);
+        return createFallback2FAChallenge(username);
       }
 
       return { ok: false, error: data.error || 'Username atau password salah.', status: res.status };
     } catch (e) {
       // Network / Offline / File-protocol error
       if (isDefaultAdmin || isDefaultOp) {
-        return createFallbackSession(username);
+        return createFallback2FAChallenge(username);
       }
       return { ok: false, error: 'Gagal terhubung ke server autentikasi. Periksa koneksi.' };
+    }
+  }
+
+  function createFallback2FAChallenge(username) {
+    const offlineCode = '123456';
+    const tempToken = 'offline_2fa_' + Date.now();
+    window._offline2FA = { username, tempToken, code: offlineCode };
+    return {
+      ok: true,
+      requires2FA: true,
+      tempToken,
+      username,
+      codeHint: offlineCode
+    };
+  }
+
+  // ── Step 2 Verify 2FA Verification Code ───────────────────
+  async function verify2FA(username, code, tempToken) {
+    try {
+      const res = await fetch('/api/auth/verify-2fa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tempToken, code })
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.token) {
+        setToken(data.token);
+        setCurrentUser(data.user);
+        updateLastActive();
+        startIdleTimer();
+        startSessionCheck();
+        return { ok: true, user: data.user, token: data.token };
+      }
+
+      // Offline fallback verification
+      if (window._offline2FA && window._offline2FA.tempToken === tempToken) {
+        if (code.trim() === window._offline2FA.code) {
+          delete window._offline2FA;
+          return createFallbackSession(username);
+        } else {
+          return { ok: false, error: 'Kode Verifikasi 2FA 6-digit salah.' };
+        }
+      }
+
+      return { ok: false, error: data.error || 'Kode Verifikasi 2FA salah.' };
+    } catch (e) {
+      if (window._offline2FA && window._offline2FA.tempToken === tempToken) {
+        if (code.trim() === window._offline2FA.code) {
+          delete window._offline2FA;
+          return createFallbackSession(username);
+        } else {
+          return { ok: false, error: 'Kode Verifikasi 2FA 6-digit salah.' };
+        }
+      }
+      return { ok: false, error: 'Gagal terhubung ke server untuk verifikasi 2FA.' };
     }
   }
 
@@ -432,6 +499,7 @@ const Security = (() => {
   return {
     // Auth
     login,
+    verify2FA,
     logout,
     isLoggedIn,
     getCurrentUser,

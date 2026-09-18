@@ -37,6 +37,108 @@ window.doGlobalLogout = function () {
   }, 300);
 };
 
+window.open2FAModal = function (sessionInfo) {
+  window._pending2FASession = sessionInfo;
+  const overlay = document.getElementById('authOverlay');
+  if (overlay) {
+    overlay.style.cssText = 'display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;';
+  }
+
+  const modal = document.getElementById('twoFactorModalOverlay');
+  const codeHintEl = document.getElementById('twoFactorCodeHint');
+  const inputEl = document.getElementById('twoFactorCode');
+  const errEl = document.getElementById('twoFactorErrorMsg');
+
+  if (codeHintEl) codeHintEl.textContent = sessionInfo.codeHint || '123456';
+  if (inputEl) { inputEl.value = ''; setTimeout(() => inputEl.focus(), 100); }
+  if (errEl) errEl.textContent = '';
+
+  if (modal) {
+    modal.style.cssText = 'display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:all!important;z-index:999999!important;';
+  }
+};
+
+window.close2FAModal = function () {
+  delete window._pending2FASession;
+  const modal = document.getElementById('twoFactorModalOverlay');
+  if (modal) {
+    modal.style.cssText = 'display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;';
+  }
+
+  const overlay = document.getElementById('authOverlay');
+  if (overlay) {
+    overlay.style.cssText = 'display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:all!important;';
+    overlay.classList.remove('hidden');
+    overlay.removeAttribute('hidden');
+  }
+};
+
+window.doSubmit2FA = async function () {
+  const session = window._pending2FASession;
+  const inputEl = document.getElementById('twoFactorCode');
+  const errEl = document.getElementById('twoFactorErrorMsg');
+  const submitBtn = document.getElementById('submit2FABtn');
+  const modal = document.getElementById('twoFactorModalOverlay');
+
+  if (!session || !inputEl) return;
+  const code = inputEl.value.trim();
+
+  if (!code || code.length < 6) {
+    if (errEl) errEl.textContent = 'Masukkan 6-digit kode OTP verifikasi.';
+    return;
+  }
+
+  if (errEl) errEl.textContent = '';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...';
+  }
+
+  try {
+    const sec = window.Security;
+    const cms = window.cmsEngine;
+    const res = await sec.verify2FA(session.username, code, session.tempToken);
+
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Verifikasi &amp; Masuk';
+    }
+
+    if (res && res.ok) {
+      if (modal) {
+        modal.style.cssText = 'display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;';
+      }
+
+      const name = res.user ? (res.user.namaLengkap || res.user.username || 'Admin') : 'Admin';
+      if (typeof window._showToast === 'function') {
+        window._showToast(`🔐 2FA Terverifikasi! Selamat datang kembali, ${name}!`, 'success');
+      }
+
+      if (typeof window._updateSessionBar === 'function') {
+        window._updateSessionBar();
+      }
+
+      try {
+        const freshData = await cms.loadData();
+        if (typeof window._populateForms === 'function') {
+          window._populateForms(freshData);
+        }
+      } catch (e) {}
+
+    } else {
+      if (errEl) errEl.textContent = res.error || 'Kode verifikasi 2FA 6-digit salah.';
+      inputEl.value = '';
+      inputEl.focus();
+    }
+  } catch (e) {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Verifikasi &amp; Masuk';
+    }
+    if (errEl) errEl.textContent = 'Gagal memverifikasi kode 2FA.';
+  }
+};
+
 window.doGlobalLogin = async function () {
   const uEl = document.getElementById('loginUsername');
   const pEl = document.getElementById('loginPassword');
@@ -81,6 +183,11 @@ window.doGlobalLogin = async function () {
     if (submitBtn) {
       submitBtn.disabled = false;
       submitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Panel CMS';
+    }
+
+    if (result && result.requires2FA) {
+      window.open2FAModal(result);
+      return;
     }
 
     if (result && result.ok) {
@@ -192,6 +299,34 @@ async function initAdmin() {
   }
   if (quickLoginOperator) {
     quickLoginOperator.addEventListener('click', () => window.doGlobalQuickLogin('operator'));
+  }
+
+  // ── 2FA Form Listeners ──────────────────────────────────────
+  const twoFactorForm = document.getElementById('twoFactorForm');
+  const btnCancel2FA = document.getElementById('btnCancel2FA');
+  const btnCopy2FACode = document.getElementById('btnCopy2FACode');
+  const twoFactorCodeInput = document.getElementById('twoFactorCode');
+
+  if (twoFactorForm) {
+    twoFactorForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      window.doSubmit2FA();
+    });
+  }
+
+  if (btnCancel2FA) {
+    btnCancel2FA.addEventListener('click', () => window.close2FAModal());
+  }
+
+  if (btnCopy2FACode) {
+    btnCopy2FACode.addEventListener('click', () => {
+      const hint = document.getElementById('twoFactorCodeHint')?.textContent?.trim();
+      if (hint && twoFactorCodeInput) {
+        twoFactorCodeInput.value = hint;
+        twoFactorCodeInput.focus();
+        if (typeof showToast === 'function') showToast('Kode OTP 2FA disalin!', 'success');
+      }
+    });
   }
 
   // ── Form Submit Listener ────────────────────────────────────
